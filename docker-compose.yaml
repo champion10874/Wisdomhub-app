@@ -1,0 +1,94 @@
+version: '3.9'
+services:
+  redis:
+    container_name: redis_container
+    image: redis:alpine
+    restart: always
+    ports:
+      - 6379:6379
+    command: redis-server --loglevel warning
+    volumes:
+      - ./docker-volumes/cache:/data
+  mongodb:
+    container_name: mongodb_container
+    image: mongo:latest
+    restart: always
+    ports:
+      - 27017:27017
+    volumes:
+      - ./docker-volumes/db:/data/db
+  mysql:
+    container_name: mysql_container
+    image: mysql:latest
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    environment:
+      MYSQL_USER: wisdomhub
+      MYSQL_DATABASE: wisdomhub_auth
+      MYSQL_ROOT_PASSWORD: local
+      MYSQL_PASSWORD: local
+    ports:
+      - 3306:3306
+    volumes:
+      - ./docker-volumes/mysql:/var/lib/mysql
+  postgres:
+    container_name: postgres_container
+    image: postgres:latest
+    restart: always
+    environment:
+      POSTGRES_USER: wisdomhub
+      POSTGRES_DB: wisdomhub_reviews
+      POSTGRES_PASSWORD: local
+    ports:
+      - 5432:5432
+    volumes:
+      - ./docker-volumes/postgres:/var/lib/postgresql/data
+  rabbitmq:
+    container_name: rabbitmq_container
+    image: rabbitmq:3-management
+    restart: always
+    ports:
+      # AMQP protocol port
+      - 5672:5672
+      # Management UI interface port
+      - 15672:15672
+    volumes:
+      - ./docker-volumes/rabbitmq:/var/lib/rabbitmq
+  elasticsearch:
+    container_name: elasticsearch_container
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.11.1
+    restart: always
+    environment:
+       ES_JAVA_OPTS: -Xmx1g -Xms1g
+       bootstrap.memory_lock: "true"
+       discovery.type: single-node
+       xpack.security.enabled: "false"
+       xpack.security.authc.api_key.enabled: "true"
+       xpack.monitoring.collection.enabled: "true"
+       xpack.security.enrollment.enabled: "true"
+    ports:
+      - 9200:9200
+      - 9300:9300
+    volumes:
+      - ./docker-volumes/elasticsearch-data:/usr/share/elasticsearch/data
+    networks:
+      - elastic
+  kibana:
+    container_name: kibana_container
+    image: docker.elastic.co/kibana/kibana:8.11.1
+    restart: always
+    environment:
+      ELASTICSEARCH_HOSTS: http://elasticsearch:9200
+    ports:
+      - 5601:5601
+    networks:
+      - elastic
+    volumes:
+        - ./kibana.yml/:/usr/share/kibana/config/kibana.yml:ro
+    depends_on:
+        - elasticsearch
+
+
+networks:
+  elastic:
+    name: elastic
