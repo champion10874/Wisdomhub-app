@@ -78,4 +78,6 @@ export {
   TSellerDocument
 } from './interfaces/seller.types';
 
+export { uploadToCloudinary } from './cloudinary-upload';
+
 
