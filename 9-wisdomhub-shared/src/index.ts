@@ -80,4 +80,16 @@ export {
 
 export { uploadToCloudinary } from './cloudinary-upload';
 
+export {
+  TErrorResponse,
+  TError,
+  CustomError,
+  BadRequestError,
+  NotFoundError,
+  NotAuthorizedError,
+  ServerError,
+  FileTooLargeError,
+  IErrorNoException
+} from './error-handler';
+
 
