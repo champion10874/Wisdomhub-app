@@ -2,7 +2,7 @@
   "version": "0.0.1",
   "license": "MIT",
   "main": "index.js",
-  "description": "Helpers library for Jobber app",
+  "description": "Shared Library for wisdomhub app",
   "engines": {
     "node": ">=20"
   },
@@ -27,6 +27,10 @@
   "publishConfig": {
     "registry": "https://npm.pkg.github.com"
   },
+  "files": [
+    "build",
+    "src"
+  ],
   "exports": {
     ".": {
       "import": "./esm/index.js",

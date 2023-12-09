@@ -1,9 +1,9 @@
 name: Publish
 on:
   push:
-    branches: [ master ]
+    branches: [ main ]
   pull_request:
-    branches: [ master ]
+    branches: [ main ]
 jobs:
   publish:
     runs-on: ubuntu-latest
@@ -18,9 +18,9 @@ jobs:
       - run: npm install
       - run: npm run build
       - run: |
-          echo @hassonor:https://npm.pkg.github.com > build/.npmrc
+          echo @hassonor:https://npm.pkg.github.com/ > build/.npmrc
           echo '//npm.pkg.github.com/:_authToken=${NPM_TOKEN}' >> build/.npmrc
       - run: npm publish
-        working-directory: build
+        working-directory: ./build
         env:
           NPM_TOKEN: ${{ secrets.GITHUB_TOKEN }}
