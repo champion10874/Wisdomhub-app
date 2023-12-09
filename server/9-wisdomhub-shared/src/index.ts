@@ -13,9 +13,9 @@ export {
   TReduxLogout,
   TAuthResponse,
   TAuthUser
-} from './interfaces/auth.types';
+} from './auth.types';
 
-export { TBuyerDocument, TReduxBuyer } from './interfaces/buyer.types';
+export { TBuyerDocument, TReduxBuyer } from './buyer.types';
 
 export {
   IConversationDocument,
@@ -25,9 +25,9 @@ export {
   TChatSellerProps,
   TChatBuyerProps,
   TChatMessageProps,
-} from './interfaces/chat.types';
+} from './chat.types';
 
-export { TEmailLocals } from './interfaces/email.types';
+export { TEmailLocals } from './email.types';
 
 export {
   TCreateGig,
@@ -40,7 +40,7 @@ export {
   TGigViewReviewsProps,
   TGigInfo,
   TGigTopProps,
-} from './interfaces/gig.types';
+} from './gig.types';
 
 export {
   TOffer,
@@ -51,7 +51,7 @@ export {
   TOrderMessage,
   TOrderDocument,
   TOrderNotification
-} from './interfaces/order.types';
+} from './order.types';
 
 export {
   TReviewMessageDetails,
@@ -59,7 +59,7 @@ export {
   TReviewDocument,
   TRatingCategoryItem,
   TRatingCategories
-} from './interfaces/review.types';
+} from './review.types';
 
 export {
   TSearchResult,
@@ -67,7 +67,7 @@ export {
   TQueryList,
   TQueryString, TTerm,
   TPaginateProps
-} from './interfaces/search.types';
+} from './search.types';
 
 export {
   TSellerType,
@@ -76,7 +76,7 @@ export {
   TEducation,
   TCertificate,
   TSellerDocument
-} from './interfaces/seller.types';
+} from './seller.types';
 
 export { uploadToCloudinary } from './cloudinary-upload';
 
