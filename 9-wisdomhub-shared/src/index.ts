@@ -92,4 +92,6 @@ export {
   IErrorNoException
 } from './error-handler';
 
+export { winstonLogger } from './logger';
+
 
