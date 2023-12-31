@@ -1,11 +1,9 @@
 {
   "compilerOptions": {
-    "declaration": true,
-    "emitDeclarationOnly": true,
-    "importHelpers": true,
+    "target": "ES2015",
     "lib": [
       "dom",
-      "ES2021"
+      "ES2015"
     ],
     "module": "commonjs",
     "baseUrl": ".",
@@ -39,11 +37,5 @@
         "src/*"
       ]
     }
-  },
-  "include": [
-    "src"
-  ],
-  "exclude": [
-    "node_modules"
-  ]
+  }
 }
