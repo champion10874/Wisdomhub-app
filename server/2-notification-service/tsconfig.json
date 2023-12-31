@@ -5,9 +5,9 @@
     "importHelpers": true,
     "lib": [
       "dom",
-      "esnext"
+      "ES2021"
     ],
-    "module": "esnext",
+    "module": "commonjs",
     "baseUrl": ".",
     "outDir": "./build",
     "rootDir": ".",
