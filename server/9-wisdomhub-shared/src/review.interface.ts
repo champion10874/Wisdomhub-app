@@ -1,4 +1,4 @@
-export type TReviewMessageDetails = {
+export interface IReviewMessageDetails {
   gigId?: string;
   reviewerId?: string;
   sellerId?: string;
@@ -9,11 +9,11 @@ export type TReviewMessageDetails = {
   type: string;
 }
 
-export type TRatingTypes = {
+export interface IRatingTypes {
   [key: string]: string;
 }
 
-export type TReviewDocument = {
+export interface IReviewDocument {
   _id?: string;
   gigId: string;
   reviewerId: string;
@@ -28,15 +28,15 @@ export type TReviewDocument = {
   reviewType?: string;
 }
 
-export type TRatingCategoryItem = {
+export interface IRatingCategoryItem {
   value: number;
   count: number;
 }
 
-export type TRatingCategories = {
-  five: TRatingCategoryItem;
-  four: TRatingCategoryItem;
-  three: TRatingCategoryItem;
-  two: TRatingCategoryItem;
-  one: TRatingCategoryItem;
+export interface IRatingCategories {
+  five: IRatingCategoryItem;
+  four: IRatingCategoryItem;
+  three: IRatingCategoryItem;
+  two: IRatingCategoryItem;
+  one: IRatingCategoryItem;
 }

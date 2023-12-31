@@ -1,99 +1,93 @@
 export {
-  TAuthPayload,
-  TAuth,
-  TAuthBuyerMessageDetails,
-  TEmailMessageDetails,
-  TAuthDocument,
-  TSignInPayload,
-  TSignUpPayload,
-  TForgotPassword,
-  TResetPassword,
-  TReduxAuthPayload,
-  TReduxAddAuthUser,
-  TReduxLogout,
-  TAuthResponse,
-  TAuthUser
-} from './auth.types';
-
-export { TBuyerDocument, TReduxBuyer } from './buyer.types';
-
+  IAuthPayload,
+  IAuthDocument,
+  IAuthBuyerMessageDetails,
+  IEmailMessageDetails,
+  IAuth,
+  ISignUpPayload,
+  ISignInPayload,
+  IForgotPassword,
+  IResetPassword,
+  IReduxAuthPayload,
+  IReduxAddAuthUser,
+  IReduxLogout,
+  IAuthResponse,
+  IAuthUser,
+} from './auth.interface';
+export { IBuyerDocument, IReduxBuyer } from './buyer.interface';
 export {
   IConversationDocument,
-  TMessageDocument,
-  TMessageDetails,
-  TChatBoxProps,
-  TChatSellerProps,
-  TChatBuyerProps,
-  TChatMessageProps,
-} from './chat.types';
-
-export { TEmailLocals } from './email.types';
-
+  IMessageDocument,
+  IMessageDetails,
+  IChatBoxProps,
+  IChatSellerProps,
+  IChatBuyerProps,
+  IChatMessageProps,
+} from './chat.interface';
 export {
-  TCreateGig,
-  TSellerGig,
-  TGigContext,
-  TGigsProps,
-  TGigType,
-  TGigCardItems,
-  TSelectedBudget,
-  TGigViewReviewsProps,
-  TGigInfo,
-  TGigTopProps,
-} from './gig.types';
-
+  GigType,
+  ICreateGig,
+  ISellerGig,
+  IGigContext,
+  IGigsProps,
+  IGigCardItems,
+  ISelectedBudget,
+  IGigViewReviewsProps,
+  IGigInfo,
+  IGigTopProps,
+} from './gig.interface';
 export {
-  TOffer,
-  TExtendedDelivery,
-  TDeliveredWork,
-  TOrderEvents,
-  TOrderReview,
-  TOrderMessage,
-  TOrderDocument,
-  TOrderNotification
-} from './order.types';
-
+  IOrderNotifcation,
+  IOffer,
+  IExtendedDelivery,
+  IDeliveredWork,
+  IOrderEvents,
+  IOrderReview,
+  IOrderMessage,
+  IOrderDocument,
+} from './order.interface';
 export {
-  TReviewMessageDetails,
-  TRatingTypes,
-  TReviewDocument,
-  TRatingCategoryItem,
-  TRatingCategories
-} from './review.types';
-
+  IReviewMessageDetails,
+  IRatingTypes,
+  IRatingCategories,
+  IRatingCategoryItem,
+  IReviewDocument,
+} from './review.interface';
 export {
-  TSearchResult,
-  THitsTotal,
-  TQueryList,
-  TQueryString, TTerm,
-  TPaginateProps
-} from './search.types';
-
+  ISearchResult,
+  IHitsTotal,
+  IQueryList,
+  IQueryString,
+  ITerm,
+  IPaginateProps,
+} from './search.interface';
 export {
-  TSellerType,
-  TLanguage,
-  TExperience,
-  TEducation,
-  TCertificate,
-  TSellerDocument
-} from './seller.types';
-
-export { uploadToCloudinary } from './cloudinary-upload';
-
+  SellerType,
+  ILanguage,
+  IExperience,
+  IEducation,
+  ICertificate,
+  ISellerDocument,
+} from './seller.interface';
+export { IEmailLocals } from './email.interface';
+export { uploads, videoUpload } from './cloudinary-upload';
 export {
-  TErrorResponse,
-  TError,
+  IErrorResponse,
+  IError,
   CustomError,
   BadRequestError,
   NotFoundError,
   NotAuthorizedError,
-  ServerError,
   FileTooLargeError,
-  IErrorNoException
+  ServerError,
+  ErrnoException
 } from './error-handler';
-
+export { verifyGatewayRequest } from './gateway-middleware';
 export { winstonLogger } from './logger';
-
-export { firstLetterUppercase, lowerCase, toUpperCase, isEmail, isDataURL } from './helpers';
-
-
+export {
+  firstLetterUppercase,
+  lowerCase,
+  toUpperCase,
+  isEmail,
+  isDataURL
+} from './helpers';

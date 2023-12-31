@@ -1,31 +1,31 @@
 import { Field, QueryDslRangeQuery, SearchHit } from '@elastic/elasticsearch/lib/api/types';
 
-export type TSearchResult = {
+export interface ISearchResult {
   hits: SearchHit[];
   total: number;
 }
 
-export type THitsTotal = {
+export interface IHitsTotal {
   value: number;
   relation: string;
 }
 
-export type TQueryList = {
-  query_string?: TQueryString;
+export interface IQueryList {
+  query_string?: IQueryString;
   range?: Partial<Record<Field, QueryDslRangeQuery>>;
-  term?: TTerm;
+  term?: ITerm;
 }
 
-export type TQueryString = {
+export interface IQueryString {
   fields: string[];
   query: string;
 }
 
-export type TTerm = {
+export interface ITerm {
   active: boolean;
 }
 
-export type TPaginateProps = {
+export interface IPaginateProps {
   from: string;
   size: number;
   type: string;

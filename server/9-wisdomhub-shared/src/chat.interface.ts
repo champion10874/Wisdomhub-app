@@ -1,7 +1,7 @@
 import mongoose, { ObjectId } from 'mongoose';
-import { TOffer } from './order.types';
-import { TSellerGig } from './gig.types';
-import { TSellerDocument } from './seller.types';
+import { IOffer } from './order.interface';
+import { ISellerGig } from './gig.interface';
+import { ISellerDocument } from './seller.interface';
 
 export interface IConversationDocument extends Document {
   _id: mongoose.Types.ObjectId | string;
@@ -10,7 +10,7 @@ export interface IConversationDocument extends Document {
   receiverUsername: string;
 }
 
-export type TMessageDocument = {
+export interface IMessageDocument {
   _id?: string | ObjectId;
   conversationId?: string;
   body?: string;
@@ -28,12 +28,12 @@ export type TMessageDocument = {
   receiverPicture?: string;
   isRead?: boolean;
   hasOffer?: boolean;
-  offer?: TOffer;
+  offer?: IOffer;
   hasConversationId?: boolean;
   createdAt?: Date | string;
 }
 
-export type TMessageDetails = {
+export interface IMessageDetails {
   sender?: string;
   offerLink?: string;
   amount?: string;
@@ -45,28 +45,28 @@ export type TMessageDetails = {
   template?: string;
 }
 
-export type TChatBoxProps = {
-  seller: TChatSellerProps;
-  buyer: TChatBuyerProps
+export interface IChatBoxProps {
+  seller: IChatSellerProps;
+  buyer: IChatBuyerProps
   gigId: string;
   onClose: () => void;
 }
 
-export type TChatSellerProps = {
+export interface IChatSellerProps {
   _id: string;
   username: string;
   profilePicture: string;
   responseTime: number;
 }
 
-export type TChatBuyerProps = {
+export interface IChatBuyerProps {
   _id: string;
   username: string;
   profilePicture: string;
 }
 
-export type TChatMessageProps = {
-  message: TMessageDocument;
-  seller?: TSellerDocument;
-  gig?: TSellerGig;
+export interface IChatMessageProps {
+  message: IMessageDocument;
+  seller?: ISellerDocument;
+  gig?: ISellerGig;
 }

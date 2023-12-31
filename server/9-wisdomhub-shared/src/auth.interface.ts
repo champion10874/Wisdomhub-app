@@ -1,19 +1,19 @@
 declare global {
   namespace Express {
     interface Request {
-      currentUser?: TAuthPayload;
+      currentUser?: IAuthPayload;
     }
   }
 }
 
-export type TAuthPayload = {
+export interface IAuthPayload {
   id: number;
   username: string;
   email: string;
   iat?: number;
 }
 
-export type TAuth = {
+export interface IAuth {
   username?: string;
   password?: string;
   email?: string;
@@ -21,7 +21,7 @@ export type TAuth = {
   profilePicture?: string;
 }
 
-export type TAuthDocument = {
+export interface IAuthDocument {
   id?: number;
   profilePublicId?: string;
   username?: string;
@@ -39,7 +39,7 @@ export type TAuthDocument = {
   hashPassword(password: string): Promise<string>;
 }
 
-export type TAuthBuyerMessageDetails = {
+export interface IAuthBuyerMessageDetails {
   username?: string;
   profilePicture?: string;
   email?: string;
@@ -48,7 +48,7 @@ export type TAuthBuyerMessageDetails = {
   type?: string;
 }
 
-export type TEmailMessageDetails = {
+export interface IEmailMessageDetails {
   receiverEmail?: string;
   template?: string;
   verifyLink?: string;
@@ -56,7 +56,7 @@ export type TEmailMessageDetails = {
   username?: string;
 }
 
-export type TSignUpPayload = {
+export interface ISignUpPayload {
   [key: string]: string;
   username: string;
   password: string;
@@ -65,41 +65,41 @@ export type TSignUpPayload = {
   profilePicture: string;
 }
 
-export type TSignInPayload = {
+export interface ISignInPayload {
   [key: string]: string;
   username: string;
   password: string;
 }
 
-export type TForgotPassword = {
+export interface IForgotPassword {
   email: string;
 }
 
-export type TResetPassword = {
+export interface IResetPassword {
   [key: string]: string;
   password: string;
   confirmPassword: string;
 }
 
-export type TReduxAuthPayload = {
-  authInfo?: TAuthDocument;
+export interface IReduxAuthPayload {
+  authInfo?: IAuthDocument;
 }
 
-export type TReduxAddAuthUser = {
+export interface IReduxAddAuthUser {
   type: string;
-  payload: TReduxAuthPayload;
+  payload: IReduxAuthPayload;
 }
 
-export type TReduxLogout = {
+export interface IReduxLogout {
   type: string;
   payload: boolean;
 }
 
-export type TAuthResponse = {
+export interface IAuthResponse {
   message: string;
 }
 
-export type TAuthUser = {
+export interface IAuthUser {
   profilePublicId: string | null;
   country: string | null;
   createdAt: Date | null;
@@ -108,7 +108,7 @@ export type TAuthUser = {
   emailVerified: boolean | null;
   id: number | null;
   passwordResetExpires: Date | null;
-  passwordResetToken: string |null;
+  passwordResetToken: null | null;
   profilePicture: string | null;
   updatedAt: Date | null;
   username: string | null;

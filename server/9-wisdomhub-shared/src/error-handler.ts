@@ -1,38 +1,36 @@
 import { StatusCodes } from 'http-status-codes';
 
-
-export type TErrorResponse = {
+export interface IErrorResponse {
   message: string;
   statusCode: number;
   status: string;
-  sourceOfError: string;
-  serializeErrors(): TError;
+  comingFrom: string;
+  serializeErrors(): IError;
 }
 
-export type TError = {
+export interface IError {
   message: string;
   statusCode: number;
   status: string;
-  sourceOfError: string;
+  comingFrom: string;
 }
 
 export abstract class CustomError extends Error {
   abstract statusCode: number;
   abstract status: string;
-  sourceOfError: string;
+  comingFrom: string;
 
-  protected constructor(message: string, sourceOfError: string) {
+  constructor(message: string, comingFrom: string) {
     super(message);
-    this.sourceOfError = sourceOfError;
+    this.comingFrom = comingFrom;
   }
 
-  serializeErrors(): TError {
+  serializeErrors(): IError {
     return {
-      sourceOfError: this.sourceOfError,
-      status: this.status,
+      message: this.message,
       statusCode: this.statusCode,
-      message: this.message
-
+      status: this.status,
+      comingFrom: this.comingFrom,
     }
   }
 }
@@ -41,8 +39,8 @@ export class BadRequestError extends CustomError {
   statusCode = StatusCodes.BAD_REQUEST;
   status = 'error';
 
-  constructor(message: string, sourceOfError: string) {
-    super(message, sourceOfError);
+  constructor(message: string, comingFrom: string) {
+    super(message, comingFrom);
   }
 }
 
@@ -50,8 +48,8 @@ export class NotFoundError extends CustomError {
   statusCode = StatusCodes.NOT_FOUND;
   status = 'error';
 
-  constructor(message: string, sourceOfError: string) {
-    super(message, sourceOfError);
+  constructor(message: string, comingFrom: string) {
+    super(message, comingFrom);
   }
 }
 
@@ -59,8 +57,8 @@ export class NotAuthorizedError extends CustomError {
   statusCode = StatusCodes.UNAUTHORIZED;
   status = 'error';
 
-  constructor(message: string, sourceOfError: string) {
-    super(message, sourceOfError);
+  constructor(message: string, comingFrom: string) {
+    super(message, comingFrom);
   }
 }
 
@@ -68,8 +66,8 @@ export class FileTooLargeError extends CustomError {
   statusCode = StatusCodes.REQUEST_TOO_LONG;
   status = 'error';
 
-  constructor(message: string, sourceOfError: string) {
-    super(message, sourceOfError);
+  constructor(message: string, comingFrom: string) {
+    super(message, comingFrom);
   }
 }
 
@@ -77,13 +75,13 @@ export class ServerError extends CustomError {
   statusCode = StatusCodes.SERVICE_UNAVAILABLE;
   status = 'error';
 
-  constructor(message: string, sourceOfError: string) {
-    super(message, sourceOfError);
+  constructor(message: string, comingFrom: string) {
+    super(message, comingFrom);
   }
 }
 
-export interface IErrorNoException extends Error {
-  errorNo?: number;
+export interface ErrnoException extends Error {
+  errno?: number;
   code?: string;
   path?: string;
   syscall?: string;

@@ -1,4 +1,5 @@
-export type TOffer = {
+
+export interface IOffer {
   [key: string]: string | number | boolean | undefined;
   gigTitle: string;
   price: number;
@@ -8,10 +9,10 @@ export type TOffer = {
   newDeliveryDate: string;
   accepted: boolean;
   cancelled: boolean;
-  reason?: string;
+  reason?: string; // this is the reason for extending the delivery date
 }
 
-export type TExtendedDelivery = {
+export interface IExtendedDelivery {
   originalDate: string;
   newDate: string;
   days: number;
@@ -19,7 +20,7 @@ export type TExtendedDelivery = {
   deliveryDateUpdate?: string;
 }
 
-export type TDeliveredWork = {
+export interface IDeliveredWork {
   message: string;
   file: string;
   fileType: string;
@@ -27,7 +28,7 @@ export type TDeliveredWork = {
   fileName: string;
 }
 
-export type TOrderEvents = {
+export interface IOrderEvents {
   placeOrder: string;
   requirements: string;
   orderStarted: string;
@@ -37,13 +38,13 @@ export type TOrderEvents = {
   sellerReview?: string;
 }
 
-export type TOrderReview = {
+export interface IOrderReview {
   rating: number;
   review: string;
   date?: string;
 }
 
-export type TOrderMessage = {
+export interface IOrderMessage {
   sellerId?: string;
   buyerId?: string;
   ongoingJobs?: number;
@@ -78,8 +79,8 @@ export type TOrderMessage = {
   serviceFee?: string;
 }
 
-export type TOrderDocument = {
-  offer: TOffer;
+export interface IOrderDocument {
+  offer: IOffer;
   gigId: string;
   sellerId: string;
   sellerUsername: string;
@@ -98,22 +99,22 @@ export type TOrderDocument = {
   invoiceId: string;
   quantity: number;
   price: number;
-  requestExtension?: TExtendedDelivery;
+  requestExtension?: IExtendedDelivery;
   serviceFee?: number;
   requirements?: string;
   approved?: boolean;
   cancelled?: boolean;
   delivered?: boolean;
   approvedAt?: string;
-  deliveredWork?: TDeliveredWork[];
+  deliveredWork?: IDeliveredWork[];
   dateOrdered?: string;
-  events: TOrderEvents;
-  buyerReview?: TOrderReview;
-  sellerReview?: TOrderReview;
+  events: IOrderEvents;
+  buyerReview?: IOrderReview;
+  sellerReview?: IOrderReview;
   paymentIntent?: string;
 }
 
-export type TOrderNotification = {
+export interface IOrderNotifcation {
   _id?: string;
   userTo: string;
   senderUsername: string;

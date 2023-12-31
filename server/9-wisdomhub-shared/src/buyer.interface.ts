@@ -1,6 +1,6 @@
 import { ObjectId } from "mongoose";
 
-export type TBuyerDocument = {
+export interface IBuyerDocument {
   _id?: string | ObjectId;
   username?: string;
   email?: string;
@@ -12,7 +12,7 @@ export type TBuyerDocument = {
   updatedAt?: Date | string;
 }
 
-export type TReduxBuyer = {
+export interface IReduxBuyer {
   type?: string;
-  payload: TBuyerDocument;
+  payload: IBuyerDocument;
 }

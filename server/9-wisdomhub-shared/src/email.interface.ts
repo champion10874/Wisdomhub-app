@@ -1,4 +1,4 @@
-export type TEmailLocals = {
+export interface IEmailLocals {
   sender?: string;
   appLink: string;
   appIcon: string;
