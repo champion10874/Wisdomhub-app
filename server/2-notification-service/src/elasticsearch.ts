@@ -21,7 +21,7 @@ export async function checkConnection(): Promise<void> {
       isConnected = true;
     } catch (error) {
       log.error('Connection to ElasticSearch failed. Retrying...');
-      log.log('error', 'NotificationService checkConnection() method:', error);
+      log.log('error', 'NotificationService checkConnection() method:', (error as Error).message);
     }
   }
 }
