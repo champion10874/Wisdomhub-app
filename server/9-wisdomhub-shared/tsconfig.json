@@ -5,7 +5,10 @@
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "importHelpers": true,
-    "lib": ["DOM", "esnext"],
+    "lib": [
+      "DOM",
+      "esnext"
+    ],
     "module": "CommonJS",
     "moduleResolution": "node",
     "noEmitOnError": true,
@@ -17,8 +20,12 @@
     "emitDecoratorMetadata": true,
     "forceConsistentCasingInFileNames": true,
     "pretty": true,
-    "resolveJsonModule": true,
+    "resolveJsonModule": true
   },
-  "include": ["src"],
-  "exclude": ["node_modules"]
+  "include": [
+    "src"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
 }
