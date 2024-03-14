@@ -5,17 +5,17 @@ import { Logger } from 'winston';
 
 const log: Logger = winstonLogger(`${config.ELASTIC_SEARCH_URL}`, 'notificationQueueConnection', 'debug');
 
-async function createConncection(): Promise<Channel | undefined> {
+async function createRabbitMQConnection(): Promise<Channel | undefined> {
   try {
     const connection: Connection = await client.connect(`${config.RABBITMQ_ENDPOINT}`);
     const channel: Channel = await connection.createChannel();
-    log.info('Notification server connected to queue successfully...');
+    log.info('Notification server connected to queue successfully');
     closeConnection(channel, connection);
 
     return channel;
 
   } catch (error) {
-    log.log('error', 'NotificationService error createConnection() method:', error);
+    log.log('error', 'NotificationService error createRabbitMQConnection() method:', error);
     return;
   }
 }
@@ -27,4 +27,4 @@ function closeConnection(channel: Channel, connection: Connection): void {
   });
 }
 
-export { createConncection };
+export { createRabbitMQConnection };
