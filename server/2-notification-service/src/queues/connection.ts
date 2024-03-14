@@ -10,7 +10,7 @@ async function createRabbitMQConnection(): Promise<Channel | undefined> {
     const connection: Connection = await client.connect(`${config.RABBITMQ_ENDPOINT}`);
     const channel: Channel = await connection.createChannel();
     log.info('Notification server connected to queue successfully');
-    closeConnection(channel, connection);
+    closeRabbitMQConnection(channel, connection);
 
     return channel;
 
@@ -20,7 +20,7 @@ async function createRabbitMQConnection(): Promise<Channel | undefined> {
   }
 }
 
-function closeConnection(channel: Channel, connection: Connection): void {
+function closeRabbitMQConnection(channel: Channel, connection: Connection): void {
   process.once('SIGINT', async () => {
     await channel.close();
     await connection.close();

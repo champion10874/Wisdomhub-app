@@ -6,7 +6,7 @@ import { config } from '@notifications/config';
 import { Application } from 'express';
 import * as process from 'process';
 import { healthRoutes } from '@notifications/routes';
-import { checkConnection } from '@notifications/elasticsearch';
+import { checkElasticSearchConnection } from '@notifications/elasticsearch';
 import { createRabbitMQConnection } from '@notifications/queues/connection';
 
 const SERVER_PORT = 4001;
@@ -24,7 +24,7 @@ async function startQueues(): Promise<void> {
 }
 
 function startElasticSearch(): void {
-  checkConnection();
+  checkElasticSearchConnection();
 }
 
 function startServer(app: Application): void {

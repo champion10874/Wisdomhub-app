@@ -11,7 +11,7 @@ const elasticSearchClient = new Client({
   node: `${config.ELASTIC_SEARCH_URL}`
 });
 
-export async function checkConnection(): Promise<void> {
+export async function checkElasticSearchConnection(): Promise<void> {
   let isConnected = false;
 
   while (!isConnected) {
