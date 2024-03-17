@@ -25,13 +25,13 @@ async function startQueues(): Promise<void> {
   const emailChannel: Channel = await createRabbitMQConnection() as Channel;
   await consumeAuthEmailMessages(emailChannel);
   await consumeOrderEmailMessages(emailChannel);
-  await emailChannel.assertExchange('jobber-email-notification', 'direct');
-  const message1 = JSON.stringify({ name: 'jobber', service: 'notification auth service' });
-  emailChannel.publish('jobber-email-notification', 'auth-email', Buffer.from(message1));
+  await emailChannel.assertExchange('wisdomhub-email-notification', 'direct');
+  const message1 = JSON.stringify({ name: 'wisdomhub', service: 'notification auth service' });
+  emailChannel.publish('wisdomhub-email-notification', 'auth-email', Buffer.from(message1));
 
-  await emailChannel.assertExchange('jobber-order-notification', 'direct');
-  const message2 = JSON.stringify({ name: 'jobber', service: 'notification order service' });
-  emailChannel.publish('jobber-order-notification', 'order-email', Buffer.from(message2));
+  await emailChannel.assertExchange('wisdomhub-order-notification', 'direct');
+  const message2 = JSON.stringify({ name: 'wisdomhub', service: 'notification order service' });
+  emailChannel.publish('wisdomhub-order-notification', 'order-email', Buffer.from(message2));
 }
 
 function startElasticSearch(): void {
