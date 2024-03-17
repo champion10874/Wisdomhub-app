@@ -56,16 +56,64 @@ async function consumeOrderEmailMessages(channel: Channel): Promise<void> {
 
     await channel.bindQueue(wisdomhubQueue.queue, exchangeName, routingKey);
     channel.consume(wisdomhubQueue.queue, async (msg: ConsumeMessage | null) => {
-      const { receiverEmail, username, verifyLink, resetLink, template } = JSON.parse(msg!.content.toString());
-      const locals: IEmailLocals = {
-        appLink: `{notificationConfig.CLIENT_URL}`,
-        appIcon: 'https://ibb.co/8sXh1xn',
+      const {
+        receiverEmail,
         username,
-        verifyLink,
-        resetLink
+        template,
+        sender,
+        offerLink,
+        amount,
+        buyerUsername,
+        sellerUsername,
+        title,
+        description,
+        deliveryDays,
+        orderId,
+        orderDue,
+        requirements,
+        orderUrl,
+        originalDate,
+        newDate,
+        reason,
+        subject,
+        header,
+        type,
+        message,
+        serviceFee,
+        total
+      } = JSON.parse(msg!.content.toString());
+      const locals: IEmailLocals = {
+        appLink: `${notificationConfig.CLIENT_URL}`,
+        appIcon: 'https://i.ibb.co/xL34xgK/wisdomhub-Icon.jpg',
+        username,
+        sender,
+        offerLink,
+        amount,
+        buyerUsername,
+        sellerUsername,
+        title,
+        description,
+        deliveryDays,
+        orderId,
+        orderDue,
+        requirements,
+        orderUrl,
+        originalDate,
+        newDate,
+        reason,
+        subject,
+        header,
+        type,
+        message,
+        serviceFee,
+        total
       };
-      await sendEmail(template, receiverEmail, locals);
-      // acknowledge
+      if (template === 'orderPlaced') {
+        await sendEmail('orderPlaced', receiverEmail, locals);
+        await sendEmail('orderReceipt', receiverEmail, locals);
+      } else {
+        await sendEmail(template, receiverEmail, locals);
+      }
       channel.ack(msg!);
     });
 
