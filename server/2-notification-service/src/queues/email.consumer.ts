@@ -1,8 +1,9 @@
 import { Channel, ConsumeMessage } from 'amqplib';
 import { notificationConfig } from '@notifications/config';
-import { winstonLogger } from '@hassonor/wisdomhub-shared';
+import { IEmailLocals, winstonLogger } from '@hassonor/wisdomhub-shared';
 import { Logger } from 'winston';
 import { createRabbitMQConnection } from '@notifications/queues/connection';
+import { sendEmail } from '@notifications/queues/mail.transport';
 
 const log: Logger = winstonLogger(`${notificationConfig.ELASTIC_SEARCH_URL}`, 'emailConsumer', 'debug');
 
@@ -21,8 +22,15 @@ async function consumeAuthEmailMessages(channel: Channel): Promise<void> {
 
     await channel.bindQueue(wisdomhubQueue.queue, exchangeName, routingKey);
     channel.consume(wisdomhubQueue.queue, async (msg: ConsumeMessage | null) => {
-      console.log(JSON.parse(msg!.content.toString()));
-      // send emails
+      const { receiverEmail, username, verifyLink, resetLink, template } = JSON.parse(msg!.content.toString());
+      const locals: IEmailLocals = {
+        appLink: `{notificationConfig.CLIENT_URL}`,
+        appIcon: 'https://i.ibb.co/xL34xgK/wisdomhub-Icon.jpg',
+        username,
+        verifyLink,
+        resetLink
+      };
+      await sendEmail(template, receiverEmail, locals);
       // acknowledge
       channel.ack(msg!);
     });
@@ -48,8 +56,15 @@ async function consumeOrderEmailMessages(channel: Channel): Promise<void> {
 
     await channel.bindQueue(wisdomhubQueue.queue, exchangeName, routingKey);
     channel.consume(wisdomhubQueue.queue, async (msg: ConsumeMessage | null) => {
-      console.log(JSON.parse(msg!.content.toString()));
-      // send emails
+      const { receiverEmail, username, verifyLink, resetLink, template } = JSON.parse(msg!.content.toString());
+      const locals: IEmailLocals = {
+        appLink: `{notificationConfig.CLIENT_URL}`,
+        appIcon: 'https://ibb.co/8sXh1xn',
+        username,
+        verifyLink,
+        resetLink
+      };
+      await sendEmail(template, receiverEmail, locals);
       // acknowledge
       channel.ack(msg!);
     });

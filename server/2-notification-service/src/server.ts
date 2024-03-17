@@ -1,6 +1,6 @@
 import http from 'http';
 import 'express-async-errors';
-import { winstonLogger } from '@hassonor/wisdomhub-shared';
+import { IEmailMessageDetails, winstonLogger } from '@hassonor/wisdomhub-shared';
 import { Logger } from 'winston';
 import { notificationConfig } from '@notifications/config';
 import { Application } from 'express';
@@ -25,13 +25,20 @@ async function startQueues(): Promise<void> {
   const emailChannel: Channel = await createRabbitMQConnection() as Channel;
   await consumeAuthEmailMessages(emailChannel);
   await consumeOrderEmailMessages(emailChannel);
+  const verificationLink = `${notificationConfig.CLIENT_URL}/confirm_email?v_token=123124124gsdlkj`;
+  const messageDetails: IEmailMessageDetails = {
+    receiverEmail: `${notificationConfig.SENDER_EMAIL}`,
+    resetLink: verificationLink,
+    username: 'hassonor',
+    template: 'forgotPassword'
+  };
   await emailChannel.assertExchange('wisdomhub-email-notification', 'direct');
-  const message1 = JSON.stringify({ name: 'wisdomhub', service: 'notification auth service' });
+  const message1 = JSON.stringify(messageDetails);
   emailChannel.publish('wisdomhub-email-notification', 'auth-email', Buffer.from(message1));
-
-  await emailChannel.assertExchange('wisdomhub-order-notification', 'direct');
-  const message2 = JSON.stringify({ name: 'wisdomhub', service: 'notification order service' });
-  emailChannel.publish('wisdomhub-order-notification', 'order-email', Buffer.from(message2));
+  //
+  // await emailChannel.assertExchange('wisdomhub-order-notification', 'direct');
+  // const message2 = JSON.stringify({ name: 'wisdomhub', service: 'notification order service' });
+  // emailChannel.publish('wisdomhub-order-notification', 'order-email', Buffer.from(message2));
 }
 
 function startElasticSearch(): void {
