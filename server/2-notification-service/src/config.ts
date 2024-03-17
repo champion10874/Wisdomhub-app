@@ -20,5 +20,5 @@ class Config {
   }
 }
 
-export const config: Config = new Config();
+export const notificationConfig: Config = new Config();
 

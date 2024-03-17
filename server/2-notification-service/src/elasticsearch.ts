@@ -1,14 +1,14 @@
 import { Client } from '@elastic/elasticsearch';
-import { config } from '@notifications/config';
+import { notificationConfig } from '@notifications/config';
 import { winstonLogger } from '@hassonor/wisdomhub-shared';
 import { Logger } from 'winston';
 import { ClusterHealthResponse } from '@elastic/elasticsearch/lib/api/types';
 
-const log: Logger = winstonLogger(`${config.ELASTIC_SEARCH_URL}`, 'notificationElasticSearch', 'debug');
+const log: Logger = winstonLogger(`${notificationConfig.ELASTIC_SEARCH_URL}`, 'notificationElasticSearch', 'debug');
 
 
 const elasticSearchClient = new Client({
-  node: `${config.ELASTIC_SEARCH_URL}`
+  node: `${notificationConfig.ELASTIC_SEARCH_URL}`
 });
 
 export async function checkElasticSearchConnection(): Promise<void> {

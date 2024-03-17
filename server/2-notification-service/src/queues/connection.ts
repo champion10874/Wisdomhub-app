@@ -1,13 +1,13 @@
 import client, { Channel, Connection } from 'amqplib';
 import { winstonLogger } from '@hassonor/wisdomhub-shared';
-import { config } from '@notifications/config';
+import { notificationConfig } from '@notifications/config';
 import { Logger } from 'winston';
 
-const log: Logger = winstonLogger(`${config.ELASTIC_SEARCH_URL}`, 'notificationQueueConnection', 'debug');
+const log: Logger = winstonLogger(`${notificationConfig.ELASTIC_SEARCH_URL}`, 'notificationQueueConnection', 'debug');
 
 async function createRabbitMQConnection(): Promise<Channel | undefined> {
   try {
-    const connection: Connection = await client.connect(`${config.RABBITMQ_ENDPOINT}`);
+    const connection: Connection = await client.connect(`${notificationConfig.RABBITMQ_ENDPOINT}`);
     const channel: Channel = await connection.createChannel();
     log.info('Notification server connected to queue successfully');
     closeRabbitMQConnection(channel, connection);
