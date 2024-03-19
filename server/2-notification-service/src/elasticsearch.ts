@@ -6,7 +6,6 @@ import { ClusterHealthResponse } from '@elastic/elasticsearch/lib/api/types';
 
 const log: Logger = winstonLogger(`${notificationConfig.ELASTIC_SEARCH_URL}`, 'notificationElasticSearch', 'debug');
 
-
 const elasticSearchClient = new Client({
   node: `${notificationConfig.ELASTIC_SEARCH_URL}`
 });

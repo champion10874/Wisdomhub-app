@@ -4,7 +4,14 @@
   "description": "",
   "main": "app.js",
   "scripts": {
+    "start": "cross-env pm2 start ./build/src/app.js -i 5 --attach --watch | pino-pretty -c",
+    "stop": "cross-env pm2 stop all",
+    "delete": "cross-env pm2 delete all",
     "dev": "cross-env nodemon -r tsconfig-paths/register src/app.ts | pino-pretty -c",
+    "lint:check": "cross-env eslint 'src/**/*.ts'",
+    "lint:fix": "cross-env eslint 'src/**/*.ts' --fix",
+    "prettier:check": "cross-env prettier --check 'src/**/*.{ts,json}'",
+    "prettier:fix": "cross-env prettier --write 'src/**/*.{ts,json}'",
     "build": "cross-env tsc --project tsconfig.json && tsc-alias -p tsconfig.json",
     "test": "cross-env jest --coverage=true -w=1 --forceExit --detectOpenHandles --watchAll=false"
   },

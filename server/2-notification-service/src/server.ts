@@ -22,7 +22,7 @@ export function start(app: Application): void {
 }
 
 async function startQueues(): Promise<void> {
-  const emailChannel: Channel = await createRabbitMQConnection() as Channel;
+  const emailChannel: Channel = (await createRabbitMQConnection()) as Channel;
   await consumeAuthEmailMessages(emailChannel);
   await consumeOrderEmailMessages(emailChannel);
 }
@@ -38,7 +38,6 @@ function startServer(app: Application): void {
     httpServer.listen(SERVER_PORT, () => {
       log.info(`Notification server running on port ${SERVER_PORT}`);
     });
-
   } catch (error) {
     log.log('error', 'NotificationService startServer() method:', error);
   }

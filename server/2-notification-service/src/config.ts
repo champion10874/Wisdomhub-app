@@ -21,4 +21,3 @@ class Config {
 }
 
 export const notificationConfig: Config = new Config();
-

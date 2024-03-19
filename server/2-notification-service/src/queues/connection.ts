@@ -13,7 +13,6 @@ async function createRabbitMQConnection(): Promise<Channel | undefined> {
     closeRabbitMQConnection(channel, connection);
 
     return channel;
-
   } catch (error) {
     log.log('error', 'NotificationService error createRabbitMQConnection() method:', error);
     return;

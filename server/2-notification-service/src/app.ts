@@ -4,7 +4,6 @@ import { notificationConfig } from '@notifications/config';
 import express, { Express } from 'express';
 import { start } from '@notifications/server';
 
-
 const log: Logger = winstonLogger(`${notificationConfig.ELASTIC_SEARCH_URL}`, 'notificationApp', 'debug');
 
 function initialize(): void {

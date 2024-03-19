@@ -10,7 +10,7 @@ const log: Logger = winstonLogger(`${notificationConfig.ELASTIC_SEARCH_URL}`, 'e
 async function consumeAuthEmailMessages(channel: Channel): Promise<void> {
   try {
     if (!channel) {
-      channel = await createRabbitMQConnection() as Channel;
+      channel = (await createRabbitMQConnection()) as Channel;
     }
 
     const exchangeName = 'wisdomhub-email-notification';
@@ -34,17 +34,15 @@ async function consumeAuthEmailMessages(channel: Channel): Promise<void> {
       // acknowledge
       channel.ack(msg!);
     });
-
   } catch (error) {
     log.log('error', 'NotificationService EmailConsumer consumeAuthEmailMessages() method error:', error);
   }
 }
 
-
 async function consumeOrderEmailMessages(channel: Channel): Promise<void> {
   try {
     if (!channel) {
-      channel = await createRabbitMQConnection() as Channel;
+      channel = (await createRabbitMQConnection()) as Channel;
     }
 
     const exchangeName = 'wisdomhub-order-notification';
@@ -116,7 +114,6 @@ async function consumeOrderEmailMessages(channel: Channel): Promise<void> {
       }
       channel.ack(msg!);
     });
-
   } catch (error) {
     log.log('error', 'NotificationService EmailConsumer consumeOrderEmailMessages() method error:', error);
   }

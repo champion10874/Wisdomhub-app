@@ -5,9 +5,7 @@ import nodemailer, { Transporter } from 'nodemailer';
 import Email from 'email-templates';
 import path from 'path';
 
-
 const log: Logger = winstonLogger(`${notificationConfig.ELASTIC_SEARCH_URL}`, 'mailTransportHelper', 'debug');
-
 
 async function emailTemplates(template: string, receiver: string, locals: IEmailLocals): Promise<void> {
   try {
@@ -46,7 +44,6 @@ async function emailTemplates(template: string, receiver: string, locals: IEmail
       message: { to: receiver },
       locals
     });
-
   } catch (error) {
     log.error(error);
   }

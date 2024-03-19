@@ -69,6 +69,3 @@ describe('Email Consumer', () => {
     });
   });
 });
-
-
-
