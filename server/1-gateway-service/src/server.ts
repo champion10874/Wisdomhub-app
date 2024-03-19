@@ -9,10 +9,11 @@ import http from 'http';
 import compression from 'compression';
 import { StatusCodes } from 'http-status-codes';
 import * as process from 'process';
+import { gatewayConfig } from '@gateway/config';
 
 const SERVER_PORT = 4000;
-const log: Logger = winstonLogger('http://localhost:9200', 'apiGatewayServer', 'debug');
-4;
+const log: Logger = winstonLogger(`${gatewayConfig.ELASTIC_SEARCH_URL}`, 'apiGatewayServer', 'debug');
+
 
 export class GatewayServer {
   private app: Application;
@@ -35,16 +36,16 @@ export class GatewayServer {
     app.use(
       cookieSession({
         name: 'session',
-        keys: [],
+        keys: [`${gatewayConfig.SECRET_KEY_ONE},${gatewayConfig.SECRET_KEY_TWO}`],
         maxAge: 24 * 2 * 3600000, // 2 days
-        secure: false // update this with the value from the config: local - false, prod - true
+        secure: gatewayConfig.NODE_ENV !== 'development'
         // sameSite: none
       })
     );
     app.use(hpp());
     app.use(helmet());
     app.use(cors({
-      origin: '',
+      origin: gatewayConfig.CLIENT_URL,
       credentials: true,
       methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS']
     }));
