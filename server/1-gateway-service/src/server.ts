@@ -10,6 +10,7 @@ import compression from 'compression';
 import { StatusCodes } from 'http-status-codes';
 import * as process from 'process';
 import { gatewayConfig } from '@gateway/config';
+import { elasticSearch } from '@gateway/elasticsearch';
 
 const SERVER_PORT = 4000;
 const log: Logger = winstonLogger(`${gatewayConfig.ELASTIC_SEARCH_URL}`, 'apiGatewayServer', 'debug');
@@ -62,7 +63,7 @@ export class GatewayServer {
   }
 
   private startElasticSearch(): void {
-
+    elasticSearch.checkConnection();
   }
 
   private errorHandler(app: Application): void {
