@@ -1,6 +1,6 @@
 import http from 'http';
 import 'express-async-errors';
-import { IEmailMessageDetails, winstonLogger } from '@hassonor/wisdomhub-shared';
+import { winstonLogger } from '@hassonor/wisdomhub-shared';
 import { Logger } from 'winston';
 import { notificationConfig } from '@notifications/config';
 import { Application } from 'express';
