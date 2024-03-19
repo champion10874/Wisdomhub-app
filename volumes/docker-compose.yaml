@@ -57,6 +57,9 @@ services:
       - 15672:15672
     volumes:
       - ./docker-volumes/rabbitmq:/var/lib/rabbitmq
+    networks:
+      - elastic
+
   elasticsearch:
     container_name: elasticsearch_container
     image: docker.elastic.co/elasticsearch/elasticsearch:8.11.1
@@ -65,10 +68,15 @@ services:
       ES_JAVA_OPTS: -Xmx1g -Xms1g
       bootstrap.memory_lock: "true"
       discovery.type: single-node
-      xpack.security.enabled: "false"
-      xpack.security.authc.api_key.enabled: "true"
-      xpack.monitoring.collection.enabled: "true"
-      xpack.security.enrollment.enabled: "true"
+      network.host: 0.0.0.0
+      transport.host: 127.0.0.1
+      http.host: 0.0.0.0
+      xpack.security.enabled: 'true'
+      xpack.security.authc.api_key.enabled: 'true'
+      xpack.monitoring.collection.enabled: 'true'
+      xpack.security.enrollment.enabled: 'true'
+      xpack.security.authc.token.enabled: 'true'
+      ELASTIC_PASSWORD: admin1234
     ports:
       - 9200:9200
       - 9300:9300
@@ -81,15 +89,19 @@ services:
     image: docker.elastic.co/kibana/kibana:8.11.1
     restart: always
     environment:
-      ELASTICSEARCH_HOSTS: http://elasticsearch:9200
+      - ELASTICSEARCH_HOSTS=["http://elasticsearch:9200"]
+      - ELASTICSEARCH_USERNAME=kibana_system
+      - ELASTICSEARCH_PASSWORD=kibana
+      - ELASTICSEARCH_SERVICEACCOUNT_TOKEN=AAEAAWVsYXN0aWMva2liYW5hL3dpc2RvbWh1Yi1raWJhbmE6ZG9mc1EzcXpRQTJjanpuSkxnaDgyQQ
+      - XPACK_FLEET_AGENTS_ELASTICSEARCH_HOSTS=["http://elasticsearch:9200"]
     ports:
       - 5601:5601
-    networks:
-      - elastic
     volumes:
       - ./kibana.yml/:/usr/share/kibana/config/kibana.yml:ro
     depends_on:
       - elasticsearch
+    networks:
+      - elastic
 
   notifications:
     container_name: notification_container
@@ -109,11 +121,14 @@ services:
       - RABBITMQ_ENDPOINT=amqp://wisdomhub:wisdomhubpass@rabbitmq_container:5672
       - SENDER_EMAIL=clarabelle52@ethereal.email
       - SENDER_EMAIL_PASSWORD=nGFBcWrBm8qXyh1sgZ
-      - ELASTIC_SEARCH_URL=http://elasticsearch_container:9200
+      - ELASTIC_SEARCH_URL=http://elastic:admin1234@elasticsearch_container:9200
       - ELASTIC_APM_SERVER_URL=http://localhost:8200
       - ELASTIC_APM_SECRET_TOKEN=
     depends_on:
       - elasticsearch
+      - rabbitmq
+    networks:
+      - elastic
 
 networks:
   elastic:

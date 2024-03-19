@@ -5,11 +5,14 @@ server.port: 5601
 monitoring.ui.container.elasticsearch.enabled: true
 xpack.fleet.enabled: true
 xpack.fleet.agents.enabled: true
-xpack.fleet.agents.elasticsearch.hosts: ["http://elasticsearch:9200"]
-xpack.fleet.agents.fleet_server.hosts: ["http://fleet-server:9243"]
-xpack.reporting.roles.enabled: false
-
+xpack.fleet.agents.elasticsearch.hosts: [ "http://elasticsearch:9200" ]
+xpack.fleet.agents.fleet_server.hosts: [ "http://fleet-server:9243" ]
+xpack.reporting.roles.enabled: true
+xpack.fleet.agentIdVerificationEnabled: false
+xpack.security.encryptionKey: "12345678901234567890123456789012"
 xpack.encryptedSavedObjects.encryptionKey: "12345678901234567890123456789012"
+xpack.reporting.kibanaServer.hostname: localhost
+
 
 xpack.fleet.packages:
   - name: apm
