@@ -16,7 +16,6 @@ import { appRoutes } from '@gateway/routes';
 const SERVER_PORT = 4000;
 const log: Logger = winstonLogger(`${gatewayConfig.ELASTIC_SEARCH_URL}`, 'apiGatewayServer', 'debug');
 
-
 export class GatewayServer {
   private app: Application;
 
@@ -46,11 +45,13 @@ export class GatewayServer {
     );
     app.use(hpp());
     app.use(helmet());
-    app.use(cors({
-      origin: gatewayConfig.CLIENT_URL,
-      credentials: true,
-      methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS']
-    }));
+    app.use(
+      cors({
+        origin: gatewayConfig.CLIENT_URL,
+        credentials: true,
+        methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS']
+      })
+    );
   }
 
   private standardMiddleware(app: Application): void {
@@ -101,7 +102,5 @@ export class GatewayServer {
     } catch (error) {
       log.log('error', 'GatewayService startHttpServer() error method', error);
     }
-
   }
 }
-

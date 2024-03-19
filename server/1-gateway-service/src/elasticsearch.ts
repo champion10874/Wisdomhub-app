@@ -4,7 +4,6 @@ import { gatewayConfig } from '@gateway/config';
 import { Client } from '@elastic/elasticsearch';
 import { ClusterHealthResponse } from '@elastic/elasticsearch/lib/api/types';
 
-
 const log: Logger = winstonLogger(`${gatewayConfig.ELASTIC_SEARCH_URL}`, 'apiGatewayElasticConnection', 'debug');
 
 class Elasticsearch {
@@ -30,7 +29,6 @@ class Elasticsearch {
       }
     }
   }
-
 }
 
 export const elasticSearch: Elasticsearch = new Elasticsearch();
