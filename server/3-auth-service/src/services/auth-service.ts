@@ -11,6 +11,7 @@ import { authChannel } from '@auth/server';
 import { lowerCase, omit } from 'lodash';
 import { Logger } from 'winston';
 import { authConfig } from '@auth/config';
+import { sign } from 'jsonwebtoken';
 
 
 const log: Logger = winstonLogger(`${authConfig.ELASTIC_SEARCH_URL}`, 'authService', 'debug');
@@ -117,4 +118,57 @@ export async function getAuthUserByPasswordToken(token: string): Promise<IAuthDo
   } catch (error) {
     log.error(error);
   }
+}
+
+export async function updateVerifyEmailField(authId: number, emailVerified: number, emailVerificationToken: string): Promise<void> {
+  try {
+    await AuthModel.update(
+      {
+        emailVerified,
+        emailVerificationToken
+      },
+      { where: { id: authId } }
+    );
+  } catch (error) {
+    log.error(error);
+  }
+}
+
+
+export async function updatePasswordToken(authId: number, token: string, tokenExpiration: Date): Promise<void> {
+  try {
+    await AuthModel.update(
+      {
+        passwordResetToken: token,
+        passwordResetExpires: tokenExpiration
+      },
+      { where: { id: authId } }
+    );
+  } catch (error) {
+    log.error(error);
+  }
+}
+
+export async function updatePassword(authId: number, password: string): Promise<void> {
+  try {
+    await AuthModel.update(
+      {
+        password,
+        passwordResetToken: '',
+        passwordResetExpires: new Date()
+      },
+      { where: { id: authId } }
+    );
+  } catch (error) {
+    log.error(error);
+  }
+}
+
+export function signToken(id: number, email: string, username: string): string {
+  return sign({
+      id,
+      email,
+      username
+    },
+    authConfig.JWT_TOKEN!);
 }
