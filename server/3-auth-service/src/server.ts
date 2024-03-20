@@ -10,12 +10,16 @@ import compression from 'compression';
 import { elasticSearch } from '@auth/elasticsearch';
 import http from 'http';
 import { appRoutes } from '@auth/routes';
+import { createRabbitMQConnection } from '@auth/queues/connection';
+import { Channel } from 'amqplib';
 
 
 const SERVER_PORT = 4002;
 
 const log: Logger = winstonLogger(`${authConfig.ELASTIC_SEARCH_URL}`, 'authServer', 'debug');
 
+
+export let authChannel: Channel;
 
 export function start(app: Application): void {
   securityMiddleware(app);
@@ -60,7 +64,7 @@ function routesMiddleware(app: Application): void {
 }
 
 async function startQueues(): Promise<void> {
-
+  authChannel = await createRabbitMQConnection() as Channel;
 }
 
 function startElasticSearch(): void {
