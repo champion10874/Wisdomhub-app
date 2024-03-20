@@ -4,8 +4,8 @@ import * as process from 'process';
 dotenv.config({});
 
 class Config {
-  public GATEWAY_JWT_TOKEN: string | undefined;
-  public JWT_TOKEN: string | undefined;
+  public GATEWAY_JWT_TOKEN: string | undefined; // Gateway service to other microservices
+  public JWT_TOKEN: string | undefined; // Client to gateway service
   public NODE_ENV: string | undefined;
   public SECRET_KEY_ONE: string | undefined;
   public SECRET_KEY_TWO: string | undefined;
