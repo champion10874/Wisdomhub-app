@@ -6,7 +6,6 @@ COPY package.json ./
 COPY tsconfig.json ./
 COPY .npmrc ./
 COPY src ./src
-COPY tools ./tools
 
 RUN ls -la
 RUN rm -f .npmrc
@@ -15,7 +14,6 @@ ENV NPM_TOKEN=${NPM_TOKEN}
 RUN echo "//npm.pkg.github.com/:_authToken=${NPM_TOKEN}" > .npmrc && \
     echo "@hassonor:registry=https://npm.pkg.github.com/" >> .npmrc
 RUN npm install && npm install -g cross-env nodemon
-
 
 EXPOSE 4000
 
