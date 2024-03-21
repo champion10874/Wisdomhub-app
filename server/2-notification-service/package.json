@@ -43,7 +43,7 @@
   },
   "dependencies": {
     "@elastic/elasticsearch": "^8.12.2",
-    "@hassonor/wisdomhub-shared": "^0.1.14",
+    "@hassonor/wisdomhub-shared": "^0.1.15",
     "amqplib": "^0.10.3",
     "dotenv": "^16.4.5",
     "ejs": "^3.1.9",

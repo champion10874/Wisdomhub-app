@@ -20,7 +20,7 @@ export class AxiosService {
       headers: {
         'Content-Type': 'application/json',
         Accept: 'application/json',
-        gatewayToken: requestJWTGatewayToken
+        gatewaytoken: requestJWTGatewayToken
       },
       withCredentials: true
     });

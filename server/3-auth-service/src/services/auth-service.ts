@@ -1,4 +1,9 @@
-import { firstLetterUppercase, IAuthBuyerMessageDetails, IAuthDocument, winstonLogger } from '@hassonor/wisdomhub-shared';
+import {
+  firstLetterUppercase,
+  IAuthBuyerMessageDetails,
+  IAuthDocument,
+  winstonLogger
+} from '@hassonor/wisdomhub-shared';
 import { AuthModel } from '@auth/models/auth.schema';
 import { Model, Op } from 'sequelize';
 import { publishDirectMessage } from '@auth/queues/auth.producer';
@@ -46,7 +51,7 @@ export async function getAuthUserById(authId: number): Promise<IAuthDocument | u
         exclude: ['password']
       }
     })) as Model;
-    return user.dataValues;
+    return user?.dataValues;
   } catch (error) {
     log.error(error);
   }
@@ -59,7 +64,7 @@ export async function getAuthUserByUsernameOrEmail(username: string, email: stri
         [Op.or]: [{ username: firstLetterUppercase(username) }, { email: lowerCase(email) }]
       }
     })) as Model;
-    return user.dataValues;
+    return user?.dataValues;
   } catch (error) {
     log.error(error);
   }
@@ -70,7 +75,7 @@ export async function getAuthUserByUsername(username: string): Promise<IAuthDocu
     const user: Model = (await AuthModel.findOne({
       where: { username: firstLetterUppercase(username) }
     })) as Model;
-    return user.dataValues;
+    return user?.dataValues;
   } catch (error) {
     log.error(error);
   }
@@ -81,7 +86,7 @@ export async function getAuthUserByEmail(email: string): Promise<IAuthDocument |
     const user: Model = (await AuthModel.findOne({
       where: { email: lowerCase(email) }
     })) as Model;
-    return user.dataValues;
+    return user?.dataValues;
   } catch (error) {
     log.error(error);
   }
@@ -95,7 +100,7 @@ export async function getAuthUserByVerificationToken(token: string): Promise<IAu
         exclude: ['password']
       }
     })) as Model;
-    return user.dataValues;
+    return user?.dataValues;
   } catch (error) {
     log.error(error);
   }
