@@ -33,6 +33,11 @@ class AuthService {
     return response;
   }
 
+  async verifyEmail(token: string): Promise<AxiosResponse> {
+    const response: AxiosResponse = await axiosAuthInstance.put('/verify-email', { token });
+    return response;
+  }
+
   // Override in the following methods the 'this.axiosService.axios' since the user not logged in yet
   async signUp(body: IAuth): Promise<AxiosResponse> {
     const response: AxiosResponse = await this.axiosService.axios.post('/signup', body);
