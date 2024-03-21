@@ -11,7 +11,7 @@ import { publishDirectMessage } from '@auth/queues/auth.producer';
 import { authChannel } from '@auth/server';
 import { StatusCodes } from 'http-status-codes';
 
-export async function create(req: Request, res: Response): Promise<void> {
+export async function createNewUser(req: Request, res: Response): Promise<void> {
   try {
     const { error } = await Promise.resolve(signupSchema.validate(req.body));
     if (error?.details) {

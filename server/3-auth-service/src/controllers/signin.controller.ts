@@ -6,7 +6,7 @@ import { getAuthUserByEmail, getAuthUserByUsername, signToken } from '@auth/serv
 import { AuthModel } from '@auth/models/auth.schema';
 import { omit } from 'lodash';
 
-export async function read(req: Request, res: Response): Promise<void> {
+export async function login(req: Request, res: Response): Promise<void> {
   try {
     const { error } = await Promise.resolve(signinSchema.validate(req.body));
     if (error?.details) {

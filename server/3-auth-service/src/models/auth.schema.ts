@@ -84,6 +84,10 @@ AuthModel.beforeCreate('beforeCreate', async (auth: Model) => {
   return compare(password, hashedPassword);
 };
 
+(AuthModel.prototype as any).hashPassword = async function (password: string): Promise<string> {
+  return hash(password, SALT_ROUND);
+};
+
 // force: true - always deletes the table when there is a server restart
 AuthModel.sync({});
 export { AuthModel };

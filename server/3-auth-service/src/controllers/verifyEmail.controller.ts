@@ -3,7 +3,7 @@ import { BadRequestError, IAuthDocument } from '@hassonor/wisdomhub-shared';
 import { StatusCodes } from 'http-status-codes';
 import { getAuthUserById, getAuthUserByVerificationToken, updateVerifyEmailField } from '@auth/services/auth-service';
 
-export async function update(req: Request, res: Response): Promise<void> {
+export async function verifyEmail(req: Request, res: Response): Promise<void> {
   try {
     const { token } = req.body;
     const existingUser: IAuthDocument | undefined = await getAuthUserByVerificationToken(token);
