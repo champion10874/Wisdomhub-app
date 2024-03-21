@@ -2,8 +2,12 @@ name: Publish
 on:
   push:
     branches: [ master, develop ]
+    paths:
+      - 'server/9-wisdomhub-shared/**' # Trigger only on changes in 9-wisdomhub-shared folder
   pull_request:
     branches: [ master, develop ]
+    paths:
+      - 'server/9-wisdomhub-shared/**' # Trigger only on changes in 9-wisdomhub-shared folder
 jobs:
   publish:
     runs-on: ubuntu-latest
