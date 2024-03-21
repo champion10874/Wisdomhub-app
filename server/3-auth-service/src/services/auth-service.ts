@@ -1,9 +1,4 @@
-import {
-  firstLetterUppercase,
-  IAuthBuyerMessageDetails,
-  IAuthDocument,
-  winstonLogger
-} from '@hassonor/wisdomhub-shared';
+import { firstLetterUppercase, IAuthBuyerMessageDetails, IAuthDocument, winstonLogger } from '@hassonor/wisdomhub-shared';
 import { AuthModel } from '@auth/models/auth.schema';
 import { Model, Op } from 'sequelize';
 import { publishDirectMessage } from '@auth/queues/auth.producer';

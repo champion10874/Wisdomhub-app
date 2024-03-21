@@ -35,9 +35,7 @@ export interface IAuthDocument {
   updatedAt?: Date;
   passwordResetToken?: string;
   passwordResetExpires?: Date;
-
-  comparePassword(password: string, passwordFromDB: string): boolean;
-
+  comparePassword(password: string): Promise<boolean>;
   hashPassword(password: string): Promise<string>;
 }
 
@@ -60,7 +58,6 @@ export interface IEmailMessageDetails {
 
 export interface ISignUpPayload {
   [key: string]: string;
-
   username: string;
   password: string;
   email: string;
@@ -70,7 +67,6 @@ export interface ISignUpPayload {
 
 export interface ISignInPayload {
   [key: string]: string;
-
   username: string;
   password: string;
 }
@@ -81,7 +77,6 @@ export interface IForgotPassword {
 
 export interface IResetPassword {
   [key: string]: string;
-
   password: string;
   confirmPassword: string;
 }

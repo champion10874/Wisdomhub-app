@@ -17,6 +17,8 @@ export async function update(req: Request, res: Response): Promise<void> {
   } catch (error) {
     console.error('VerifyEmail Controller Error:', error);
     const errorMessage = error instanceof BadRequestError ? error.message : 'An unexpected error occurred during the verify-email process.';
-    res.status(error instanceof BadRequestError ? StatusCodes.BAD_REQUEST : StatusCodes.INTERNAL_SERVER_ERROR).json({ error: errorMessage });
+    res
+      .status(error instanceof BadRequestError ? StatusCodes.BAD_REQUEST : StatusCodes.INTERNAL_SERVER_ERROR)
+      .json({ error: errorMessage });
   }
 }

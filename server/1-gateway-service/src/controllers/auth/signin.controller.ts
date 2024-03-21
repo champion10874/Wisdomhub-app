@@ -11,7 +11,8 @@ export class SigninController {
       res.status(StatusCodes.OK).json({ message: 'User login successfully', user: response.data.user });
     } catch (error) {
       const statusCode = (error as AxiosError).response?.status || StatusCodes.INTERNAL_SERVER_ERROR;
-      const errorMessage = statusCode === StatusCodes.BAD_REQUEST ? 'Invalid signin information.' : 'An error occurred during the signin process.';
+      const errorMessage =
+        statusCode === StatusCodes.BAD_REQUEST ? 'Invalid signin information.' : 'An error occurred during the signin process.';
       res.status(statusCode).json({ error: errorMessage });
     }
   }

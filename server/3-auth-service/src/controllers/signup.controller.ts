@@ -3,13 +3,7 @@ import { Request, Response } from 'express';
 import { v4 as uuidV4 } from 'uuid';
 import { UploadApiResponse } from 'cloudinary';
 import { signupSchema } from '@auth/schemes/signup.scheme';
-import {
-  BadRequestError,
-  firstLetterUppercase,
-  IAuthDocument,
-  IEmailMessageDetails,
-  uploads
-} from '@hassonor/wisdomhub-shared';
+import { BadRequestError, firstLetterUppercase, IAuthDocument, IEmailMessageDetails, uploads } from '@hassonor/wisdomhub-shared';
 import { createAuthUser, getAuthUserByUsernameOrEmail, signToken } from '@auth/services/auth-service';
 import { lowerCase } from 'lodash';
 import { authConfig } from '@auth/config';
@@ -68,6 +62,8 @@ export async function create(req: Request, res: Response): Promise<void> {
   } catch (error) {
     console.error('SignUp Error:', error);
     const errorMessage = error instanceof BadRequestError ? error.message : 'An unexpected error occurred during the sign-up process.';
-    res.status(error instanceof BadRequestError ? StatusCodes.BAD_REQUEST : StatusCodes.INTERNAL_SERVER_ERROR).json({ error: errorMessage });
+    res
+      .status(error instanceof BadRequestError ? StatusCodes.BAD_REQUEST : StatusCodes.INTERNAL_SERVER_ERROR)
+      .json({ error: errorMessage });
   }
 }

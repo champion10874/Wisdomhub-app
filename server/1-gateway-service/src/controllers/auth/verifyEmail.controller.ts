@@ -10,7 +10,8 @@ export class VerifyEmailController {
       res.status(StatusCodes.OK).json({ message: 'Email Verified successfully', user: response.data.user });
     } catch (error) {
       const statusCode = (error as AxiosError).response?.status || StatusCodes.INTERNAL_SERVER_ERROR;
-      const errorMessage = statusCode === StatusCodes.BAD_REQUEST ? 'Something went wrong.' : 'An error occurred during the email verification process.';
+      const errorMessage =
+        statusCode === StatusCodes.BAD_REQUEST ? 'Something went wrong.' : 'An error occurred during the email verification process.';
       res.status(statusCode).json({ error: errorMessage });
     }
   }

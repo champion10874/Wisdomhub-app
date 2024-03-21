@@ -11,7 +11,8 @@ export class SignupController {
       res.status(StatusCodes.CREATED).json({ message: 'User created successfully', user: response.data.user });
     } catch (error) {
       const statusCode = (error as AxiosError).response?.status || StatusCodes.INTERNAL_SERVER_ERROR;
-      const errorMessage = statusCode === StatusCodes.BAD_REQUEST ? 'Invalid signup information.' : 'An error occurred during the signup process.';
+      const errorMessage =
+        statusCode === StatusCodes.BAD_REQUEST ? 'Invalid signup information.' : 'An error occurred during the signup process.';
       res.status(statusCode).json({ error: errorMessage });
     }
   }

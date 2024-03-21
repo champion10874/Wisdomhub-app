@@ -1,8 +1,5 @@
 import { Request, Response } from 'express';
-import {
-  BadRequestError, IAuthDocument, isEmail
-
-} from '@hassonor/wisdomhub-shared';
+import { BadRequestError, IAuthDocument, isEmail } from '@hassonor/wisdomhub-shared';
 import { StatusCodes } from 'http-status-codes';
 import { signinSchema } from '@auth/schemes/signin.scheme';
 import { getAuthUserByEmail, getAuthUserByUsername, signToken } from '@auth/services/auth-service';
@@ -19,7 +16,9 @@ export async function read(req: Request, res: Response): Promise<void> {
     const { username, password } = req.body;
     const isValidEmail: boolean = isEmail(username);
 
-    let existingUser: IAuthDocument | undefined = !isValidEmail ? await getAuthUserByUsername(username) : await getAuthUserByEmail(username);
+    let existingUser: IAuthDocument | undefined = !isValidEmail
+      ? await getAuthUserByUsername(username)
+      : await getAuthUserByEmail(username);
     if (!existingUser) {
       throw new BadRequestError('Invalid credentials', 'SignIn read() method error');
     }
@@ -39,6 +38,8 @@ export async function read(req: Request, res: Response): Promise<void> {
   } catch (error) {
     console.error('SignIn Error:', error); // move to elasticsearch later
     const errorMessage = error instanceof BadRequestError ? error.message : 'An unexpected error occurred during the sign-in process.';
-    res.status(error instanceof BadRequestError ? StatusCodes.BAD_REQUEST : StatusCodes.INTERNAL_SERVER_ERROR).json({ error: errorMessage });
+    res
+      .status(error instanceof BadRequestError ? StatusCodes.BAD_REQUEST : StatusCodes.INTERNAL_SERVER_ERROR)
+      .json({ error: errorMessage });
   }
 }
