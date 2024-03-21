@@ -1,5 +1,6 @@
 import dotenv from 'dotenv';
 import * as process from 'process';
+import cloudinary from 'cloudinary';
 
 dotenv.config({});
 
@@ -28,6 +29,14 @@ class Config {
     this.CLOUDINARY_API_KEY = process.env.CLOUDINARY_API_KEY || '';
     this.CLOUDINARY_API_SECRET = process.env.CLOUDINARY_API_SECRET || '';
     this.ELASTIC_SEARCH_URL = process.env.ELASTIC_SEARCH_URL || '';
+  }
+
+  public cloudinaryConfig(): void {
+    cloudinary.v2.config({
+      cloud_name: this.CLOUDINARY_NAME,
+      api_key: this.CLOUDINARY_API_KEY,
+      api_secret: this.CLOUDINARY_API_SECRET
+    });
   }
 }
 
