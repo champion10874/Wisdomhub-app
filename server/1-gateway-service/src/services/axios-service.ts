@@ -2,7 +2,6 @@ import axios from 'axios';
 import { sign } from 'jsonwebtoken';
 import { gatewayConfig } from '@gateway/config';
 
-
 export class AxiosService {
   public axios: ReturnType<typeof axios.create>;
 
@@ -16,7 +15,7 @@ export class AxiosService {
       requestJWTGatewayToken = sign({ id: serviceName }, `${gatewayConfig.GATEWAY_JWT_TOKEN}`);
     }
 
-    const instance: ReturnType<typeof axio.create> = axios.create({
+    const instance: ReturnType<typeof axios.create> = axios.create({
       baseURL: baseUrl,
       headers: {
         'Content-Type': 'application/json',

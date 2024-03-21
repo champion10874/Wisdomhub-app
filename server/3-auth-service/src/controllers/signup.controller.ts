@@ -2,14 +2,8 @@ import crypto from 'crypto';
 import { Request, Response } from 'express';
 import { v4 as uuidV4 } from 'uuid';
 import { UploadApiResponse } from 'cloudinary';
-import { signupSchema } from '@auth/schemes/signupScheme';
-import {
-  BadRequestError,
-  firstLetterUppercase,
-  IAuthDocument,
-  IEmailMessageDetails,
-  uploads
-} from '@hassonor/wisdomhub-shared';
+import { signupSchema } from '@auth/schemes/signup.scheme';
+import { BadRequestError, firstLetterUppercase, IAuthDocument, IEmailMessageDetails, uploads } from '@hassonor/wisdomhub-shared';
 import { createAuthUser, getAuthUserByUsernameOrEmail, signToken } from '@auth/services/auth-service';
 import { lowerCase } from 'lodash';
 import { authConfig } from '@auth/config';
@@ -31,7 +25,7 @@ export async function create(req: Request, res: Response): Promise<void> {
   }
 
   const profilePublicId = uuidV4();
-  const uploadResult: UploadApiResponse = await uploads(profilePicture, `${profilePublicId}`, true, true) as UploadApiResponse;
+  const uploadResult: UploadApiResponse = (await uploads(profilePicture, `${profilePublicId}`, true, true)) as UploadApiResponse;
   if (!uploadResult.public_id) {
     throw new BadRequestError('Image upload failed. Try again.', 'SignUp create() method error');
   }
@@ -48,7 +42,7 @@ export async function create(req: Request, res: Response): Promise<void> {
     emailVerificationToken: randomCharacters
   } as IAuthDocument;
 
-  const result: IAuthDocument = await createAuthUser(authData) as IAuthDocument;
+  const result: IAuthDocument = (await createAuthUser(authData)) as IAuthDocument;
   const verificationLink = `${authConfig.CLIENT_URL}/confirm_email?v_token=${authData.emailVerificationToken}`;
   const messageDetails: IEmailMessageDetails = {
     receiverEmail: result.email,

@@ -4,9 +4,7 @@ import { authConfig } from '@auth/config';
 import { Channel } from 'amqplib';
 import { createRabbitMQConnection } from '@auth/queues/connection';
 
-
 const log: Logger = winstonLogger(`${authConfig.ELASTIC_SEARCH_URL}`, 'authServiceProducer', 'debug');
-
 
 export async function publishDirectMessage(
   channel: Channel,
@@ -17,7 +15,7 @@ export async function publishDirectMessage(
 ): Promise<void> {
   try {
     if (!channel) {
-      channel = await createRabbitMQConnection() as Channel;
+      channel = (await createRabbitMQConnection()) as Channel;
     }
     await channel.assertExchange(exchangeName, 'direct');
     channel.publish(exchangeName, routingKey, Buffer.from(message));

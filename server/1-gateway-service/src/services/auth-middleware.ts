@@ -3,22 +3,20 @@ import { Request, Response, NextFunction } from 'express';
 import { BadRequestError, IAuthPayload, NotAuthorizedError } from '@hassonor/wisdomhub-shared';
 import { gatewayConfig } from '@gateway/config';
 
-
 class AuthMiddleware {
   public verifyUser(req: Request, _res: Response, next: NextFunction) {
     if (!req.session?.jwt) {
-      throw new NotAuthorizedError('Token is not available. Please login again.', 'GatewayService ' +
-        'verifyUser() method error');
-
+      throw new NotAuthorizedError('Token is not available. Please login again.', 'GatewayService ' + 'verifyUser() method error');
     }
 
     try {
       const payload: IAuthPayload = verify(req.session?.jwt, `${gatewayConfig.JWT_TOKEN}`) as IAuthPayload;
       req.currentUser = payload;
-
     } catch (error) {
-      throw new NotAuthorizedError('Token is not available. Please login again.', 'GatewayService ' +
-        'verifyUser() method invalid session error');
+      throw new NotAuthorizedError(
+        'Token is not available. Please login again.',
+        'GatewayService ' + 'verifyUser() method invalid session error'
+      );
     }
     next();
   }

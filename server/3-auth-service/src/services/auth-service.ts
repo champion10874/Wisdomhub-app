@@ -1,9 +1,4 @@
-import {
-  firstLetterUppercase,
-  IAuthBuyerMessageDetails,
-  IAuthDocument,
-  winstonLogger
-} from '@hassonor/wisdomhub-shared';
+import { firstLetterUppercase, IAuthBuyerMessageDetails, IAuthDocument, winstonLogger } from '@hassonor/wisdomhub-shared';
 import { AuthModel } from '@auth/models/auth.schema';
 import { Model, Op } from 'sequelize';
 import { publishDirectMessage } from '@auth/queues/auth.producer';
@@ -12,7 +7,6 @@ import { lowerCase, omit } from 'lodash';
 import { Logger } from 'winston';
 import { authConfig } from '@auth/config';
 import { sign } from 'jsonwebtoken';
-
 
 const log: Logger = winstonLogger(`${authConfig.ELASTIC_SEARCH_URL}`, 'authService', 'debug');
 
@@ -46,12 +40,12 @@ export async function createAuthUser(data: IAuthDocument): Promise<IAuthDocument
 
 export async function getAuthUserById(authId: number): Promise<IAuthDocument | undefined> {
   try {
-    const user: Model = await AuthModel.findOne({
+    const user: Model = (await AuthModel.findOne({
       where: { id: authId },
       attributes: {
         exclude: ['password']
       }
-    }) as Model;
+    })) as Model;
     return user.dataValues;
   } catch (error) {
     log.error(error);
@@ -60,11 +54,11 @@ export async function getAuthUserById(authId: number): Promise<IAuthDocument | u
 
 export async function getAuthUserByUsernameOrEmail(username: string, email: string): Promise<IAuthDocument | undefined> {
   try {
-    const user: Model = await AuthModel.findOne({
+    const user: Model = (await AuthModel.findOne({
       where: {
         [Op.or]: [{ username: firstLetterUppercase(username) }, { email: lowerCase(email) }]
       }
-    }) as Model;
+    })) as Model;
     return user.dataValues;
   } catch (error) {
     log.error(error);
@@ -73,9 +67,9 @@ export async function getAuthUserByUsernameOrEmail(username: string, email: stri
 
 export async function getAuthUserByUsername(username: string): Promise<IAuthDocument | undefined> {
   try {
-    const user: Model = await AuthModel.findOne({
+    const user: Model = (await AuthModel.findOne({
       where: { username: firstLetterUppercase(username) }
-    }) as Model;
+    })) as Model;
     return user.dataValues;
   } catch (error) {
     log.error(error);
@@ -84,9 +78,9 @@ export async function getAuthUserByUsername(username: string): Promise<IAuthDocu
 
 export async function getAuthUserByEmail(email: string): Promise<IAuthDocument | undefined> {
   try {
-    const user: Model = await AuthModel.findOne({
+    const user: Model = (await AuthModel.findOne({
       where: { email: lowerCase(email) }
-    }) as Model;
+    })) as Model;
     return user.dataValues;
   } catch (error) {
     log.error(error);
@@ -95,12 +89,12 @@ export async function getAuthUserByEmail(email: string): Promise<IAuthDocument |
 
 export async function getAuthUserByVerificationToken(token: string): Promise<IAuthDocument | undefined> {
   try {
-    const user: Model = await AuthModel.findOne({
+    const user: Model = (await AuthModel.findOne({
       where: { emailVerificationToken: token },
       attributes: {
         exclude: ['password']
       }
-    }) as Model;
+    })) as Model;
     return user.dataValues;
   } catch (error) {
     log.error(error);
@@ -109,11 +103,11 @@ export async function getAuthUserByVerificationToken(token: string): Promise<IAu
 
 export async function getAuthUserByPasswordToken(token: string): Promise<IAuthDocument | undefined> {
   try {
-    const user: Model = await AuthModel.findOne({
+    const user: Model = (await AuthModel.findOne({
       where: {
         [Op.and]: [{ passwordResetToken: token }, { passwordResetExpires: { [Op.gt]: new Date() } }]
       }
-    }) as Model;
+    })) as Model;
     return user?.dataValues;
   } catch (error) {
     log.error(error);
@@ -133,7 +127,6 @@ export async function updateVerifyEmailField(authId: number, emailVerified: numb
     log.error(error);
   }
 }
-
 
 export async function updatePasswordToken(authId: number, token: string, tokenExpiration: Date): Promise<void> {
   try {
@@ -165,10 +158,12 @@ export async function updatePassword(authId: number, password: string): Promise<
 }
 
 export function signToken(id: number, email: string, username: string): string {
-  return sign({
+  return sign(
+    {
       id,
       email,
       username
     },
-    authConfig.JWT_TOKEN!);
+    authConfig.JWT_TOKEN!
+  );
 }

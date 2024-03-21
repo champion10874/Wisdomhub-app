@@ -13,11 +13,9 @@ import { appRoutes } from '@auth/routes';
 import { createRabbitMQConnection } from '@auth/queues/connection';
 import { Channel } from 'amqplib';
 
-
 const SERVER_PORT = 4002;
 
 const log: Logger = winstonLogger(`${authConfig.ELASTIC_SEARCH_URL}`, 'authServer', 'debug');
-
 
 export let authChannel: Channel;
 
@@ -40,7 +38,8 @@ function securityMiddleware(app: Application): void {
       origin: authConfig.API_GATEWAY_URL,
       credentials: true,
       methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS']
-    }));
+    })
+  );
 
   app.use((req: Request, _res: Response, next: NextFunction) => {
     if (req.headers.autherization) {
@@ -51,7 +50,6 @@ function securityMiddleware(app: Application): void {
     next();
   });
 }
-
 
 function standardMiddleware(app: Application): void {
   app.use(compression());
@@ -64,7 +62,7 @@ function routesMiddleware(app: Application): void {
 }
 
 async function startQueues(): Promise<void> {
-  authChannel = await createRabbitMQConnection() as Channel;
+  authChannel = (await createRabbitMQConnection()) as Channel;
 }
 
 function startElasticSearch(): void {
@@ -92,5 +90,3 @@ function startServer(app: Application): void {
     log.log('error', 'AuthService startServer() method error:', error);
   }
 }
-
-
