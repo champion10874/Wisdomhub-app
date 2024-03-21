@@ -3,6 +3,7 @@ import { SignupController } from '@gateway/controllers/auth/signup.controller';
 import { SigninController } from '@gateway/controllers/auth/signin.controller';
 import { VerifyEmailController } from '@gateway/controllers/auth/verifyEmail.controller';
 import { PasswordController } from '@gateway/controllers/auth/password.controller';
+import { CurrentUserController } from '@gateway/controllers/auth/currentUser.controller';
 
 class AuthRoutes {
   private readonly router: Router;
@@ -12,6 +13,8 @@ class AuthRoutes {
   }
 
   public routes(): Router {
+    this.router.get('/auth/current-user', CurrentUserController.prototype.read);
+    this.router.post('/auth/resend-email', CurrentUserController.prototype.resendEmail);
     this.router.post('/auth/signup', SignupController.prototype.create);
     this.router.post('/auth/signin', SigninController.prototype.read);
     this.router.put('/auth/verify-email', VerifyEmailController.prototype.update);
