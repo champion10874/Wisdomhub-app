@@ -26,3 +26,4 @@ volumes/docker-volumes/*
 volumes/docker-compose.yaml
 .idea
 .env
+volumes/.env.cloudinary
