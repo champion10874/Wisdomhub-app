@@ -38,10 +38,14 @@ describe('CurrentUser', () => {
 
   describe('getCurrentUser method', () => {
     it('should return an authenticated user', async () => {
-      const req: Request = authMockRequest({}, {
-        username: USERNAME,
-        password: PASSWORD
-      }, authUserPayload) as unknown as Request;
+      const req: Request = authMockRequest(
+        {},
+        {
+          username: USERNAME,
+          password: PASSWORD
+        },
+        authUserPayload
+      ) as unknown as Request;
       const res: Response = authMockResponse();
       jest.spyOn(auth, 'getAuthUserById').mockResolvedValue(authMock);
 
@@ -50,10 +54,14 @@ describe('CurrentUser', () => {
       expect(res.json).toHaveBeenCalledWith({ message: 'Authenticated user', user: authMock });
     });
     it('should return empty user', async () => {
-      const req: Request = authMockRequest({}, {
-        username: USERNAME,
-        password: PASSWORD
-      }, authUserPayload) as unknown as Request;
+      const req: Request = authMockRequest(
+        {},
+        {
+          username: USERNAME,
+          password: PASSWORD
+        },
+        authUserPayload
+      ) as unknown as Request;
       const res: Response = authMockResponse();
       jest.spyOn(auth, 'getAuthUserById').mockResolvedValue({} as never);
 
@@ -81,10 +89,14 @@ describe('CurrentUser', () => {
 
   describe('resendEmail method', () => {
     it('should call BadRequestError for invalid email', async () => {
-      const req: Request = authMockRequest({}, {
-        username: USERNAME,
-        password: PASSWORD
-      }, authUserPayload) as unknown as Request;
+      const req: Request = authMockRequest(
+        {},
+        {
+          username: USERNAME,
+          password: PASSWORD
+        },
+        authUserPayload
+      ) as unknown as Request;
       const res: Response = authMockResponse();
       jest.spyOn(auth, 'getAuthUserByEmail').mockRejectedValue({} as never);
 
@@ -93,10 +105,14 @@ describe('CurrentUser', () => {
       });
     });
     it('should call updateVerifyEmailField and publishDirectMessage methods', async () => {
-      const req: Request = authMockRequest({}, {
-        username: USERNAME,
-        password: PASSWORD
-      }, authUserPayload) as unknown as Request;
+      const req: Request = authMockRequest(
+        {},
+        {
+          username: USERNAME,
+          password: PASSWORD
+        },
+        authUserPayload
+      ) as unknown as Request;
       const res: Response = authMockResponse();
       jest.spyOn(auth, 'getAuthUserByEmail').mockResolvedValue(authMock);
 
@@ -105,10 +121,14 @@ describe('CurrentUser', () => {
       expect(publishDirectMessage).toHaveBeenCalled();
     });
     it('should return authenticated user', async () => {
-      const req: Request = authMockRequest({}, {
-        username: USERNAME,
-        password: PASSWORD
-      }, authUserPayload) as unknown as Request;
+      const req: Request = authMockRequest(
+        {},
+        {
+          username: USERNAME,
+          password: PASSWORD
+        },
+        authUserPayload
+      ) as unknown as Request;
       const res: Response = authMockResponse();
       jest.spyOn(auth, 'getAuthUserByEmail').mockResolvedValue(authMock);
       jest.spyOn(auth, 'getAuthUserById').mockResolvedValue(authMock);

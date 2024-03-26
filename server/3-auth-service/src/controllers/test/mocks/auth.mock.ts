@@ -43,8 +43,6 @@ export const authMock: IAuthDocument = {
   profilePicture: '',
   emailVerified: 1,
   createdAt: '2024-01-01T07:43:23.342Z',
-  comparePassword: () => {
-  },
-  hashPassword: () => {
-  }
+  comparePassword: () => {},
+  hashPassword: () => {}
 } as unknown as IAuthDocument;

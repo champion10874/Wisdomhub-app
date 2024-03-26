@@ -6,8 +6,6 @@ import { StatusCodes } from 'http-status-codes';
 
 export async function gigs(req: Request, res: Response) {
   try {
-
-
     const { from, size, type } = req.params;
     let resultHits: unknown[] = [];
     const paginate: IPaginateProps = { from, size: parseInt(`${size}`), type };

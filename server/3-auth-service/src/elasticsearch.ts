@@ -55,4 +55,3 @@ async function getDocumentById(index: string, gigId: string): Promise<ISellerGig
 }
 
 export { elasticSearchClient, checkConnection, createIndex, getDocumentById };
-

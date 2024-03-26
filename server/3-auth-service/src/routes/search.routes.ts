@@ -1,7 +1,6 @@
 import express, { Router } from 'express';
 import { gigs, singleGigById } from '@auth/controllers/search.controller';
 
-
 const router: Router = express.Router();
 
 export function searchRoutes(): Router {

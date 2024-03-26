@@ -12,7 +12,6 @@ class SearchRoutes {
     this.router.get('/auth/search/gig/:from/:size/:type', SearchController.prototype.gigs);
     this.router.get('/auth/search/gig/gigId', SearchController.prototype.gigById);
 
-
     return this.router;
   }
 }

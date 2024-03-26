@@ -15,8 +15,7 @@ export class SearchController {
       });
     } catch (error) {
       const statusCode = (error as AxiosError).response?.status || StatusCodes.INTERNAL_SERVER_ERROR;
-      const errorMessage =
-        statusCode === StatusCodes.BAD_REQUEST ? 'Invalid credentials' : 'An error occurred.';
+      const errorMessage = statusCode === StatusCodes.BAD_REQUEST ? 'Invalid credentials' : 'An error occurred.';
       res.status(statusCode).json({ error: errorMessage });
     }
   }
@@ -38,8 +37,7 @@ export class SearchController {
       });
     } catch (error) {
       const statusCode = (error as AxiosError).response?.status || StatusCodes.INTERNAL_SERVER_ERROR;
-      const errorMessage =
-        statusCode === StatusCodes.BAD_REQUEST ? 'Invalid credentials' : 'An error occurred.';
+      const errorMessage = statusCode === StatusCodes.BAD_REQUEST ? 'Invalid credentials' : 'An error occurred.';
       res.status(statusCode).json({ error: errorMessage });
     }
   }

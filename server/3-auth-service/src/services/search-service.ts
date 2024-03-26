@@ -56,9 +56,11 @@ export async function gigsSearch(
         must: [...queryList]
       }
     },
-    sort: [{
-      sortId: type === 'forward' ? 'asc' : 'desc'
-    }],
+    sort: [
+      {
+        sortId: type === 'forward' ? 'asc' : 'desc'
+      }
+    ],
     ...(from !== '0' && { search_after: [from] })
   });
   const total: IHitsTotal = result.hits.total as IHitsTotal;
