@@ -1,7 +1,7 @@
 import { Logger } from 'winston';
-import { winstonLogger } from '@hassonor/wisdomhub-shared';
+import { ISellerGig, winstonLogger } from '@hassonor/wisdomhub-shared';
 import { Client } from '@elastic/elasticsearch';
-import { ClusterHealthResponse } from '@elastic/elasticsearch/lib/api/types';
+import { ClusterHealthResponse, GetResponse } from '@elastic/elasticsearch/lib/api/types';
 import { authConfig } from '@auth/config';
 
 const log: Logger = winstonLogger(`${authConfig.ELASTIC_SEARCH_URL}`, 'apiAuthServiceElasticConnection', 'debug');
@@ -37,9 +37,22 @@ async function createIndex(indexName: string): Promise<void> {
     }
   } catch (error) {
     log.error(`An error occurred while creating the index ${indexName}`);
-    log.log('error', 'AuthService createIndex() method:', error);
+    log.log('error', 'AuthService createIndex() method error:', error);
   }
 }
 
-export { elasticSearchClient, checkConnection, createIndex };
+async function getDocumentById(index: string, gigId: string): Promise<ISellerGig> {
+  try {
+    const result: GetResponse = await elasticSearchClient.get({
+      index,
+      id: gigId
+    });
+    return result._source as ISellerGig;
+  } catch (error) {
+    log.log('error', 'AuthService elasticsearch getDocumentById() method error:', error);
+    return {} as ISellerGig;
+  }
+}
+
+export { elasticSearchClient, checkConnection, createIndex, getDocumentById };
 
