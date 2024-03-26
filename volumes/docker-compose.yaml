@@ -150,9 +150,9 @@ services:
       - NODE_ENV=development
       - API_GATEWAY_URL=http://gateway_container:4000
       - CLIENT_URL=http://localhost:3000
-      - RABBITMQ_ENDPOINT=amqp://wisdomhub:wisdomhubpass@localhost:5672
-      - MYSQL_DB=mysql://wisdomhub:local@localhost:3306/wisdomhub_auth
-      - ELASTIC_SEARCH_URL=http://elastic:admin1234@localhost:9200
+      - RABBITMQ_ENDPOINT=amqp://wisdomhub:wisdomhubpass@rabbitmq_container:5672
+      - MYSQL_DB=mysql://wisdomhub:local@mysql_container:3306/wisdomhub_auth
+      - ELASTIC_SEARCH_URL=http://elastic:admin1234@elasticsearch_container:9200
       - ELASTIC_APM_SERVER_URL=http://localhost:8200
       - ELASTIC_APM_SECRET_TOKEN=
     depends_on:
