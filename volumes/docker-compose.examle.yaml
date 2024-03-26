@@ -163,7 +163,6 @@ services:
     networks:
       - elastic
 
-  
   gateway:
     container_name: gateway_container
     build:
