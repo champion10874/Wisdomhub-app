@@ -6,29 +6,40 @@ import { authConfig } from '@auth/config';
 
 const log: Logger = winstonLogger(`${authConfig.ELASTIC_SEARCH_URL}`, 'apiAuthServiceElasticConnection', 'debug');
 
-class Elasticsearch {
-  private elasticSearchClient: Client;
+const elasticSearchClient = new Client({
+  node: `${authConfig.ELASTIC_SEARCH_URL}`
+});
 
-  constructor() {
-    this.elasticSearchClient = new Client({
-      node: `${authConfig.ELASTIC_SEARCH_URL}`
-    });
-  }
-
-  public async checkConnection(): Promise<void> {
-    let isConnected = false;
-    while (!isConnected) {
-      log.info('AuthService connecting to ElasticSearch...');
-      try {
-        const health: ClusterHealthResponse = await this.elasticSearchClient.cluster.health({});
-        log.info(`AuthService ElasticSearch health status - ${health.status}`);
-        isConnected = true;
-      } catch (error) {
-        log.error('Auth Service -> Connection to ElasticSearch failed, Retrying...');
-        log.log('error', 'AuthService checkConnection() method error:', error);
-      }
+async function checkConnection(): Promise<void> {
+  let isConnected = false;
+  while (!isConnected) {
+    log.info('AuthService connecting to ElasticSearch...');
+    try {
+      const health: ClusterHealthResponse = await elasticSearchClient.cluster.health({});
+      log.info(`AuthService Elasticsearch health status - ${health.status}`);
+      isConnected = true;
+    } catch (error) {
+      log.error('Connection to Elasticsearch failed. Retrying...');
+      log.log('error', 'AuthService checkConnection() method:', error);
     }
   }
 }
 
-export const elasticSearch: Elasticsearch = new Elasticsearch();
+async function createIndex(indexName: string): Promise<void> {
+  try {
+    const result: boolean = await elasticSearchClient.indices.exists({ index: indexName });
+    if (result) {
+      log.info(`Index "${indexName}" already exist.`);
+    } else {
+      await elasticSearchClient.indices.create({ index: indexName });
+      await elasticSearchClient.indices.refresh({ index: indexName });
+      log.info(`Created index ${indexName}`);
+    }
+  } catch (error) {
+    log.error(`An error occurred while creating the index ${indexName}`);
+    log.log('error', 'AuthService createIndex() method:', error);
+  }
+}
+
+export { elasticSearchClient, checkConnection, createIndex };
+

@@ -7,7 +7,7 @@ import helmet from 'helmet';
 import cors from 'cors';
 import { verify } from 'jsonwebtoken';
 import compression from 'compression';
-import { elasticSearch } from '@auth/elasticsearch';
+import { checkConnection, createIndex } from '@auth/elasticsearch';
 import http from 'http';
 import { appRoutes } from '@auth/routes';
 import { createRabbitMQConnection } from '@auth/queues/connection';
@@ -66,7 +66,8 @@ async function startQueues(): Promise<void> {
 }
 
 function startElasticSearch(): void {
-  elasticSearch.checkConnection();
+  checkConnection();
+  createIndex('gigs');
 }
 
 function authErrorHandler(app: Application): void {
