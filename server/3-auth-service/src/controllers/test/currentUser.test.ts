@@ -1,11 +1,14 @@
 import { Request, Response } from 'express';
 import * as auth from '@auth/services/auth-service';
+import * as helper from '@hassonor/wisdomhub-shared';
 import { authMock, authMockRequest, authMockResponse, authUserPayload } from '@auth/controllers/test/mocks/auth.mock';
-import { getCurrentUser } from '@auth/controllers/currentUser.controller';
+import { getCurrentUser, resendEmail } from '@auth/controllers/currentUser.controller';
 import { StatusCodes } from 'http-status-codes';
 import { Sequelize } from 'sequelize';
+import { publishDirectMessage } from '@auth/queues/auth.producer';
 
 jest.mock('@auth/services/auth-service');
+jest.mock('@auth/queues/auth.producer');
 jest.mock('@hassonor/wisdomhub-shared');
 jest.mock('@auth/queues/auth.producer.ts');
 jest.mock('@elastic/elasticsearch');
@@ -72,6 +75,50 @@ describe('CurrentUser', () => {
       expect(res.status).toHaveBeenCalledWith(StatusCodes.INTERNAL_SERVER_ERROR);
       expect(res.json).toHaveBeenCalledWith({
         error: 'An unexpected error occurred.'
+      });
+    });
+  });
+
+  describe('resendEmail method', () => {
+    it('should call BadRequestError for invalid email', async () => {
+      const req: Request = authMockRequest({}, {
+        username: USERNAME,
+        password: PASSWORD
+      }, authUserPayload) as unknown as Request;
+      const res: Response = authMockResponse();
+      jest.spyOn(auth, 'getAuthUserByEmail').mockRejectedValue({} as never);
+
+      await resendEmail(req, res).catch(() => {
+        expect(helper.BadRequestError).toHaveBeenCalledWith('Email is invalid', 'CurrentUser resendEmail() method error');
+      });
+    });
+    it('should call updateVerifyEmailField and publishDirectMessage methods', async () => {
+      const req: Request = authMockRequest({}, {
+        username: USERNAME,
+        password: PASSWORD
+      }, authUserPayload) as unknown as Request;
+      const res: Response = authMockResponse();
+      jest.spyOn(auth, 'getAuthUserByEmail').mockResolvedValue(authMock);
+
+      await resendEmail(req, res);
+      expect(auth.updateVerifyEmailField).toHaveBeenCalled();
+      expect(publishDirectMessage).toHaveBeenCalled();
+    });
+    it('should return authenticated user', async () => {
+      const req: Request = authMockRequest({}, {
+        username: USERNAME,
+        password: PASSWORD
+      }, authUserPayload) as unknown as Request;
+      const res: Response = authMockResponse();
+      jest.spyOn(auth, 'getAuthUserByEmail').mockResolvedValue(authMock);
+      jest.spyOn(auth, 'getAuthUserById').mockResolvedValue(authMock);
+
+      await resendEmail(req, res);
+      expect(auth.updateVerifyEmailField).toHaveBeenCalled();
+      expect(res.status).toHaveBeenCalledWith(StatusCodes.OK);
+      expect(res.json).toHaveBeenCalledWith({
+        message: 'Email verification sent',
+        user: authMock
       });
     });
   });

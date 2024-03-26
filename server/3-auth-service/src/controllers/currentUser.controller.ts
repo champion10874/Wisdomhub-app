@@ -18,7 +18,7 @@ export async function getCurrentUser(req: Request, res: Response): Promise<void>
     res.status(StatusCodes.OK).json({ message: 'Authenticated user', user });
 
   } catch (error) {
-    console.error('getCurrentUser Error:', error); // move to elasticsearch later
+    // console.error('getCurrentUser Error:', error); // move to elasticsearch later
     const errorMessage =
       error instanceof BadRequestError ? error.message : 'An unexpected error occurred.';
     res
@@ -56,7 +56,7 @@ export async function resendEmail(req: Request, res: Response): Promise<void> {
     res.status(StatusCodes.OK).json({ message: 'Email verification sent', user: updatedUser });
 
   } catch (error) {
-    console.error('getCurrentUser Error:', error); // move to elasticsearch later
+    // console.error('getCurrentUser Error:', error); // move to elasticsearch later
     const errorMessage =
       error instanceof BadRequestError ? error.message : 'An unexpected error occurred.';
     res
