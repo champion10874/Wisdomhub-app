@@ -23,5 +23,6 @@ idea
 *.sln
 *.sw?
 volumes/docker-volumes/*
+volumes/docker-compose.yaml
 .idea
 .env
