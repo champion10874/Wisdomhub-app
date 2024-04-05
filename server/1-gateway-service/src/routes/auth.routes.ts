@@ -4,6 +4,7 @@ import { SigninController } from '@gateway/controllers/auth/signin.controller';
 import { VerifyEmailController } from '@gateway/controllers/auth/verifyEmail.controller';
 import { PasswordController } from '@gateway/controllers/auth/password.controller';
 import { CurrentUserController } from '@gateway/controllers/auth/currentUser.controller';
+import { AuthSeedController } from '@gateway/controllers/auth/seed.controller';
 
 class AuthRoutes {
   private readonly router: Router;
@@ -21,6 +22,7 @@ class AuthRoutes {
     this.router.put('/auth/forgot-password', PasswordController.prototype.forgotPassword);
     this.router.put('/auth/reset-password/:token', PasswordController.prototype.resetPassword);
     this.router.put('/auth/change-password', PasswordController.prototype.changePassword);
+    this.router.put('/auth/seed/:count', AuthSeedController.prototype.createUsers);
 
     return this.router;
   }

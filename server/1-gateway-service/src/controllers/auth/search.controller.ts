@@ -23,12 +23,14 @@ export class SearchController {
   public async gigs(req: Request, res: Response): Promise<void> {
     try {
       const { from, size, type } = req.params;
+      console.log('Query before: ', req.query);
       let query = '';
       const objList = Object.entries(req.query);
       const lastItemIndex = objList.length - 1;
       objList.forEach(([key, value], index) => {
         query += `${key}=${value}${index !== lastItemIndex ? '&' : ''}`;
       });
+      console.log('Query after: ', query);
       const response: AxiosResponse = await authService.getGigs(`${query}`, from, size, type);
       res.status(StatusCodes.OK).json({
         message: response.data.message,
