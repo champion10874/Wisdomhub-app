@@ -10,7 +10,7 @@ const elasticSearchClient = new Client({
   node: `${usersConfig.ELASTIC_SEARCH_URL}`
 });
 
-const checkElasticSearchConnection = async (): Promise<void> => {
+const checkConnection = async (): Promise<void> => {
   let isConnected = false;
 
   while (!isConnected) {
@@ -25,4 +25,4 @@ const checkElasticSearchConnection = async (): Promise<void> => {
   }
 };
 
-export { checkElasticSearchConnection };
+export { checkConnection };
