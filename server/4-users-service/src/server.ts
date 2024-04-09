@@ -10,6 +10,7 @@ import compression from 'compression';
 import { checkConnection } from '@users/elasticsearch';
 import http from 'http';
 import { appRoutes } from '@users/routes';
+import { createRabbitMQConnection } from '@users/queues/connection';
 
 const SERVER_PORT = 4003;
 
@@ -58,7 +59,7 @@ const routesMiddleware = (app: Application): void => {
 };
 
 const startQueues = (): void => {
-
+  createRabbitMQConnection();
 };
 
 const startElasticSearch = (): void => {
