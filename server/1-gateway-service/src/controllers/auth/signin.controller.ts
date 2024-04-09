@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { authService } from '@gateway/services/auth-service';
+import { authService } from '@gateway/services/api/auth.service';
 import { AxiosError, AxiosResponse } from 'axios';
 import { StatusCodes } from 'http-status-codes';
 

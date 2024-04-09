@@ -1,5 +1,5 @@
 import axios, { AxiosResponse } from 'axios';
-import { AxiosService } from '@gateway/services/axios-service';
+import { AxiosService } from '@gateway/services/axios.service';
 import { gatewayConfig } from '@gateway/config';
 import { IAuth } from '@hassonor/wisdomhub-shared';
 

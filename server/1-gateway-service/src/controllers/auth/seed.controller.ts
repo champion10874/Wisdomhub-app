@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { AxiosError, AxiosResponse } from 'axios';
-import { authService } from '@gateway/services/auth-service';
+import { authService } from '@gateway/services/api/auth.service';
 import { StatusCodes } from 'http-status-codes';
 
 export class AuthSeedController {

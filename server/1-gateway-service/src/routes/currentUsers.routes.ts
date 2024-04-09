@@ -1,6 +1,6 @@
 import express, { Router } from 'express';
 import { CurrentUserController } from '@gateway/controllers/auth/currentUser.controller';
-import { authMiddleware } from '@gateway/services/auth-middleware';
+import { authMiddleware } from '@gateway/services/authMiddleware';
 import { RefreshTokenController } from '@gateway/controllers/auth/refreshToken.controller';
 
 class CurrentUsersRoutes {

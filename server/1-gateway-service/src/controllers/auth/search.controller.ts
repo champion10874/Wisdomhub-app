@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import { AxiosError, AxiosResponse } from 'axios';
 
 import { StatusCodes } from 'http-status-codes';
-import { authService } from '@gateway/services/auth-service';
+import { authService } from '@gateway/services/api/auth.service';
 
 export class SearchController {
   public async gigById(req: Request, res: Response): Promise<void> {
