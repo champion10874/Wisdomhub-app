@@ -11,6 +11,8 @@ import { checkConnection } from '@users/elasticsearch';
 import http from 'http';
 import { appRoutes } from '@users/routes';
 import { createRabbitMQConnection } from '@users/queues/connection';
+import { Channel } from 'amqplib';
+import { conusmeBuyerDirectMessage } from '@users/queues/user.consumer';
 
 const SERVER_PORT = 4003;
 
@@ -58,8 +60,9 @@ const routesMiddleware = (app: Application): void => {
   appRoutes(app);
 };
 
-const startQueues = (): void => {
-  createRabbitMQConnection();
+const startQueues = async (): Promise<void> => {
+  const userChannel: Channel = await createRabbitMQConnection() as Channel;
+  await conusmeBuyerDirectMessage(userChannel);
 };
 
 const startElasticSearch = (): void => {
