@@ -2,15 +2,14 @@ import { IBuyerDocument } from '@hassonor/wisdomhub-shared';
 import { BuyerModel } from '@users/models/buyer.schema';
 
 const getBuyerByEmail = async (email: string): Promise<IBuyerDocument | null> => {
-  const buyer: IBuyerDocument | null = await BuyerModel.findOne({ email }).exec() as IBuyerDocument;
+  const buyer: IBuyerDocument | null = (await BuyerModel.findOne({ email }).exec()) as IBuyerDocument;
   return buyer;
 };
 
 const getBuyerByUsername = async (username: string): Promise<IBuyerDocument | null> => {
-  const buyer: IBuyerDocument | null = await BuyerModel.findOne({ username }).exec() as IBuyerDocument;
+  const buyer: IBuyerDocument | null = (await BuyerModel.findOne({ username }).exec()) as IBuyerDocument;
   return buyer;
 };
-
 
 const getRandomBuyers = async (size: number): Promise<IBuyerDocument[]> => {
   const arrayOfRandomBuyers: IBuyerDocument[] = await BuyerModel.aggregate([{ $sample: { size } }]);
@@ -26,7 +25,8 @@ const createBuyer = async (buyerData: IBuyerDocument): Promise<void> => {
 
 const updateBuyerIsSellerProp = async (email: string): Promise<void> => {
   await BuyerModel.updateOne(
-    { email }, {
+    { email },
+    {
       $set: {
         isSeller: true
       }
@@ -37,25 +37,18 @@ const updateBuyerIsSellerProp = async (email: string): Promise<void> => {
 const updateBuyerPurchasedGigsProp = async (buyerId: string, purchasedGigsId: string, type: string): Promise<void> => {
   await BuyerModel.updateOne(
     { _id: buyerId },
-    type == 'purchased-gigs' ?
-      {
-        $push: {
-          purchasedGigs: purchasedGigsId
+    type == 'purchased-gigs'
+      ? {
+          $push: {
+            purchasedGigs: purchasedGigsId
+          }
         }
-      } :
-      {
-        $pull: {
-          purchasedGigs: purchasedGigsId
+      : {
+          $pull: {
+            purchasedGigs: purchasedGigsId
+          }
         }
-      }
   ).exec();
 };
 
-export {
-  getBuyerByEmail,
-  getBuyerByUsername,
-  getRandomBuyers,
-  createBuyer,
-  updateBuyerIsSellerProp,
-  updateBuyerPurchasedGigsProp
-};
+export { getBuyerByEmail, getBuyerByUsername, getRandomBuyers, createBuyer, updateBuyerIsSellerProp, updateBuyerPurchasedGigsProp };

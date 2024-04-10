@@ -2,13 +2,11 @@ import axios, { AxiosResponse } from 'axios';
 import { AxiosService } from '@gateway/services/axios.service';
 import { gatewayConfig } from '@gateway/config';
 
-
 export let axiosBuyerInstance: ReturnType<typeof axios.create>;
 
 class BuyerService {
   constructor() {
-    const axiosService: AxiosService = new AxiosService(`${gatewayConfig.USERS_BASE_URL}/api/v1/buyer`,
-      'buyer');
+    const axiosService: AxiosService = new AxiosService(`${gatewayConfig.USERS_BASE_URL}/api/v1/buyer`, 'buyer');
     axiosBuyerInstance = axiosService.axios;
   }
 
@@ -26,9 +24,6 @@ class BuyerService {
     const response: AxiosResponse = await axiosBuyerInstance.get('/email');
     return response;
   }
-
-
 }
-
 
 export const buyerService: BuyerService = new BuyerService();

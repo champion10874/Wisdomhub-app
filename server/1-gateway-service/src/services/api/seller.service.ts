@@ -3,13 +3,11 @@ import { AxiosService } from '@gateway/services/axios.service';
 import { gatewayConfig } from '@gateway/config';
 import { ISellerDocument } from '@hassonor/wisdomhub-shared';
 
-
 export let axiosSellerInstance: ReturnType<typeof axios.create>;
 
 class SellerService {
   constructor() {
-    const axiosService: AxiosService = new AxiosService(`${gatewayConfig.USERS_BASE_URL}/api/v1/seller`,
-      'seller');
+    const axiosService: AxiosService = new AxiosService(`${gatewayConfig.USERS_BASE_URL}/api/v1/seller`, 'seller');
     axiosSellerInstance = axiosService.axios;
   }
 
@@ -42,9 +40,6 @@ class SellerService {
     const response: AxiosResponse = await axiosSellerInstance.put(`/seed/${count}`);
     return response;
   }
-
-
 }
-
 
 export const sellerService: SellerService = new SellerService();

@@ -1,14 +1,7 @@
-import {
-  IBuyerDocument,
-  IOrderMessage,
-  IRatingTypes,
-  IReviewMessageDetails,
-  ISellerDocument
-} from '@hassonor/wisdomhub-shared';
+import { IOrderMessage, IRatingTypes, IReviewMessageDetails, ISellerDocument } from '@hassonor/wisdomhub-shared';
 import { SellerModel } from '@users/models/seller.schema';
 import mongoose from 'mongoose';
 import { updateBuyerIsSellerProp } from '@users/services/buyer.service';
-
 
 const getSellerById = async (sellerId: string): Promise<ISellerDocument | null> => {
   const seller: ISellerDocument | null = await SellerModel.findOne({ _id: new mongoose.Types.ObjectId(sellerId) }).exec();
@@ -25,15 +18,15 @@ const getSellerByEmail = async (email: string): Promise<ISellerDocument | null> 
   return seller;
 };
 
-const getRandomSellers = async (size: number): Promise<IBuyerDocument[]> => {
-  const arrayOfRandomSellers: IBuyerDocument[] = await SellerModel.aggregate([{ $sample: { size } }]);
+const getRandomSellers = async (size: number): Promise<ISellerDocument[]> => {
+  const arrayOfRandomSellers: ISellerDocument[] = await SellerModel.aggregate([{ $sample: { size } }]);
   return arrayOfRandomSellers;
 };
 
 const createSeller = async (sellerData: ISellerDocument): Promise<ISellerDocument | null> => {
   const checkIfSellerExist: ISellerDocument | null = await getSellerByEmail(`${sellerData.email}`);
   if (!checkIfSellerExist) {
-    const createdSeller: ISellerDocument = await SellerModel.create(sellerData) as ISellerDocument;
+    const createdSeller: ISellerDocument = (await SellerModel.create(sellerData)) as ISellerDocument;
     await updateBuyerIsSellerProp(`${createdSeller.email}`);
     return createdSeller;
   }
@@ -41,7 +34,8 @@ const createSeller = async (sellerData: ISellerDocument): Promise<ISellerDocumen
 };
 
 const updateSeller = async (sellerId: string, sellerData: ISellerDocument): Promise<ISellerDocument> => {
-  const updatedSeller: ISellerDocument = await SellerModel.findOneAndUpdate({
+  const updatedSeller: ISellerDocument = (await SellerModel.findOneAndUpdate(
+    {
       _id: sellerId
     },
     {
@@ -62,7 +56,7 @@ const updateSeller = async (sellerId: string, sellerData: ISellerDocument): Prom
       }
     },
     { new: true }
-  ).exec() as ISellerDocument;
+  ).exec()) as ISellerDocument;
 
   return updatedSeller;
 };
@@ -75,16 +69,23 @@ const updateSellerOngoingJobsProp = async (sellerId: string, ongoingJobs: number
   await SellerModel.updateOne({ _id: sellerId }, { $inc: { ongoingJobs } }).exec();
 };
 
+const updateSellerCancelledJobsProp = async (sellerId: string): Promise<void> => {
+  await SellerModel.updateOne({ _id: sellerId }, { $inc: { ongoingJobs: -1, cancelledJobs: 1 } }).exec();
+};
+
 const updateSellerCompletedJobsProp = async (data: IOrderMessage): Promise<void> => {
   const { sellerId, ongoingJobs, completedJobs, totalEarnings, recentDelivery } = data;
-  await SellerModel.updateOne({ _id: sellerId }, {
-    $inc: {
-      ongoingJobs,
-      completedJobs,
-      totalEarnings
-    },
-    $set: { recentDelivery: new Date(recentDelivery!) }
-  }).exec();
+  await SellerModel.updateOne(
+    { _id: sellerId },
+    {
+      $inc: {
+        ongoingJobs,
+        completedJobs,
+        totalEarnings
+      },
+      $set: { recentDelivery: new Date(recentDelivery!) }
+    }
+  ).exec();
 };
 
 const updateSellerReview = async (data: IReviewMessageDetails): Promise<void> => {
@@ -96,7 +97,8 @@ const updateSellerReview = async (data: IReviewMessageDetails): Promise<void> =>
     '5': 'five'
   };
   const ratingKey: string = ratingTypes[`${data.rating}`];
-  await SellerModel.updateOne({ _id: data.sellerId },
+  await SellerModel.updateOne(
+    { _id: data.sellerId },
     {
       $inc: {
         ratingsCount: 1,
@@ -104,7 +106,8 @@ const updateSellerReview = async (data: IReviewMessageDetails): Promise<void> =>
         [`ratingsCategories.${ratingKey}.value`]: data.rating,
         [`ratingsCategories.${ratingKey}.count`]: 1
       }
-    });
+    }
+  );
 };
 
 export {
@@ -117,5 +120,6 @@ export {
   updateTotalGigsCount,
   updateSellerOngoingJobsProp,
   updateSellerCompletedJobsProp,
-  updateSellerReview
+  updateSellerReview,
+  updateSellerCancelledJobsProp
 };

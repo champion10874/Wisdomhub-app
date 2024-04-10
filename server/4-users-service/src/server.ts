@@ -12,7 +12,12 @@ import http from 'http';
 import { appRoutes } from '@users/routes';
 import { createRabbitMQConnection } from '@users/queues/connection';
 import { Channel } from 'amqplib';
-import { conusmeBuyerDirectMessage } from '@users/queues/user.consumer';
+import {
+  consumeBuyerDirectMessage,
+  consumeReviewFanoutMessages,
+  consumeSeedGigDirectMessages,
+  consumeSellerDirectMessage
+} from '@users/queues/user.consumer';
 
 const SERVER_PORT = 4003;
 
@@ -61,13 +66,15 @@ const routesMiddleware = (app: Application): void => {
 };
 
 const startQueues = async (): Promise<void> => {
-  const userChannel: Channel = await createRabbitMQConnection() as Channel;
-  await conusmeBuyerDirectMessage(userChannel);
+  const userChannel: Channel = (await createRabbitMQConnection()) as Channel;
+  await consumeBuyerDirectMessage(userChannel);
+  await consumeSellerDirectMessage(userChannel);
+  await consumeReviewFanoutMessages(userChannel);
+  await consumeSeedGigDirectMessages(userChannel);
 };
 
 const startElasticSearch = (): void => {
   checkConnection();
-
 };
 
 const usersErrorHandler = (app: Application): void => {
