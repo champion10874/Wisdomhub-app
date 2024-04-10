@@ -12,7 +12,7 @@ export class GetBuyerController {
     } catch (error) {
       const statusCode = (error as AxiosError).response?.status || StatusCodes.INTERNAL_SERVER_ERROR;
       const errorMessage =
-        statusCode === StatusCodes.BAD_REQUEST ? 'Something went wrong.' : 'An error occurred during the forgot password process.';
+        statusCode === StatusCodes.BAD_REQUEST ? 'Something went wrong.' : 'An error occurred during get a buyer by email.';
       res.status(statusCode).json({ error: errorMessage });
     }
   }
@@ -24,7 +24,7 @@ export class GetBuyerController {
     } catch (error) {
       const statusCode = (error as AxiosError).response?.status || StatusCodes.INTERNAL_SERVER_ERROR;
       const errorMessage =
-        statusCode === StatusCodes.BAD_REQUEST ? 'Something went wrong.' : 'An error occurred during the forgot password process.';
+        statusCode === StatusCodes.BAD_REQUEST ? 'Something went wrong.' : 'An error occurred during get buyer by currentUsername.';
       res.status(statusCode).json({ error: errorMessage });
     }
   }
@@ -36,7 +36,7 @@ export class GetBuyerController {
     } catch (error) {
       const statusCode = (error as AxiosError).response?.status || StatusCodes.INTERNAL_SERVER_ERROR;
       const errorMessage =
-        statusCode === StatusCodes.BAD_REQUEST ? 'Something went wrong.' : 'An error occurred during the forgot password process.';
+        statusCode === StatusCodes.BAD_REQUEST ? 'Something went wrong.' : 'An error occurred during get buyer by username.';
       res.status(statusCode).json({ error: errorMessage });
     }
   }

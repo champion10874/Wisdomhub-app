@@ -21,8 +21,8 @@ class SellerService {
     return response;
   }
 
-  async getRandomSellers(): Promise<AxiosResponse> {
-    const response: AxiosResponse = await axiosSellerInstance.get('/random');
+  async getRandomSellers(size: number): Promise<AxiosResponse> {
+    const response: AxiosResponse = await axiosSellerInstance.get(`/random/${size}`);
     return response;
   }
 

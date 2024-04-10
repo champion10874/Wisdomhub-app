@@ -23,14 +23,10 @@ const getRandomSellers = async (size: number): Promise<ISellerDocument[]> => {
   return arrayOfRandomSellers;
 };
 
-const createSeller = async (sellerData: ISellerDocument): Promise<ISellerDocument | null> => {
-  const checkIfSellerExist: ISellerDocument | null = await getSellerByEmail(`${sellerData.email}`);
-  if (!checkIfSellerExist) {
-    const createdSeller: ISellerDocument = (await SellerModel.create(sellerData)) as ISellerDocument;
-    await updateBuyerIsSellerProp(`${createdSeller.email}`);
-    return createdSeller;
-  }
-  return null;
+const createSeller = async (sellerData: ISellerDocument): Promise<ISellerDocument> => {
+  const createdSeller: ISellerDocument = (await SellerModel.create(sellerData)) as ISellerDocument;
+  await updateBuyerIsSellerProp(`${createdSeller.email}`);
+  return createdSeller;
 };
 
 const updateSeller = async (sellerId: string, sellerData: ISellerDocument): Promise<ISellerDocument> => {
