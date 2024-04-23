@@ -16,5 +16,5 @@ const buyerSchema: Schema = new Schema(
   }
 );
 
-const BuyerModel: Model<IBuyerDocument> = model<IBuyerDocument>('Buyer', buyerSchema);
+const BuyerModel: Model<IBuyerDocument> = model<IBuyerDocument>('Buyer', buyerSchema, 'Buyer');
 export { BuyerModel };
