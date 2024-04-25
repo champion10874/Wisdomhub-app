@@ -1,8 +1,8 @@
 import { Client } from '@elastic/elasticsearch';
 import { gigConfig } from '@gig/config';
-import { winstonLogger } from '@hassonor/wisdomhub-shared';
+import { ISellerGig, winstonLogger } from '@hassonor/wisdomhub-shared';
 import { Logger } from 'winston';
-import { ClusterHealthResponse } from '@elastic/elasticsearch/lib/api/types';
+import { ClusterHealthResponse, GetResponse } from '@elastic/elasticsearch/lib/api/types';
 
 const log: Logger = winstonLogger(`${gigConfig.ELASTIC_SEARCH_URL}`, 'gigElasticSearch', 'debug');
 
@@ -25,4 +25,44 @@ const checkConnection = async (): Promise<void> => {
   }
 };
 
-export { checkConnection };
+async function createIndex(indexName: string): Promise<void> {
+  try {
+    const result: boolean = await elasticSearchClient.indices.exists({ index: indexName });
+    if (result) {
+      log.info(`Index "${indexName}" already exist.`);
+    } else {
+      await elasticSearchClient.indices.create({ index: indexName });
+      await elasticSearchClient.indices.refresh({ index: indexName });
+      log.info(`Created index ${indexName}`);
+    }
+  } catch (error) {
+    log.error(`An error occurred while creating the index ${indexName}`);
+    log.log('error', 'GigService createIndex() method error:', error);
+  }
+}
+
+const getIndexedData = async (index: string, itemId: string): Promise<ISellerGig> => {
+  try {
+    const result: GetResponse = await elasticSearchClient.get({ index, id: itemId });
+    return result._source as ISellerGig;
+
+  } catch (error) {
+    log.log('error', 'GigService elasticsearch getIndexedData() method error:', error);
+    return {} as ISellerGig;
+  }
+};
+
+const addDataToIndex = async (index: string, itemId: string, gigDocument: unknown): Promise<void> => {
+  try {
+    await elasticSearchClient.index({
+      index,
+      id: itemId,
+      document: gigDocument
+    });
+
+  } catch (error) {
+    log.log('error', 'GigService elasticsearch addDataToIndex() method error:', error);
+  }
+};
+
+export { checkConnection, createIndex, getIndexedData, addDataToIndex };
