@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { BadRequestError, ISellerDocument } from '@hassonor/wisdomhub-shared';
 import { StatusCodes } from 'http-status-codes';
-import { sellerSchema } from '@users/schemes/seller.schemes';
+import { sellerSchema } from '@users/schemes/seller.scheme';
 import { updateSeller } from '@users/services/seller.service';
 
 const updateSellerFunc = async (req: Request, res: Response): Promise<void> => {
