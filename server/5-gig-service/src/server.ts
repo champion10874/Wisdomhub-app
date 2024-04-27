@@ -10,16 +10,19 @@ import compression from 'compression';
 import { checkConnection, createIndex } from '@gig/elasticsearch';
 import http from 'http';
 import { appRoutes } from '@gig/routes';
+import { createRabbitMQConnection } from '@gig/queues/connection';
+import { Channel } from 'amqplib';
 
 
 const SERVER_PORT = 4004;
 
 const log: Logger = winstonLogger(`${gigConfig.ELASTIC_SEARCH_URL}`, 'gigServer', 'debug');
-
+let gigChannel: Channel;
 const start = (app: Application): void => {
   securityMiddleware(app);
   standardMiddleware(app);
   routesMiddleware(app);
+  startQueues();
   startElasticSearch();
   gigErrorHandler(app);
   startServer(app);
@@ -57,6 +60,10 @@ const routesMiddleware = (app: Application): void => {
   appRoutes(app);
 };
 
+const startQueues = async (): Promise<void> => {
+  gigChannel = await createRabbitMQConnection() as Channel;
+};
+
 const startElasticSearch = (): void => {
   checkConnection();
   createIndex('gigs');
@@ -84,4 +91,4 @@ const startServer = (app: Application): void => {
   }
 };
 
-export { start };
+export { start, gigChannel };
