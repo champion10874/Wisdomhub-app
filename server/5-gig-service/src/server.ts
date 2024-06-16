@@ -12,6 +12,7 @@ import http from 'http';
 import { appRoutes } from '@gig/routes';
 import { createRabbitMQConnection } from '@gig/queues/connection';
 import { Channel } from 'amqplib';
+import { consumeGigDirectMessage, consumeSeedDirectMessages } from '@gig/queues/gig.consumer';
 
 
 const SERVER_PORT = 4004;
@@ -62,6 +63,8 @@ const routesMiddleware = (app: Application): void => {
 
 const startQueues = async (): Promise<void> => {
   gigChannel = await createRabbitMQConnection() as Channel;
+  await consumeGigDirectMessage(gigChannel);
+  await consumeSeedDirectMessages(gigChannel);
 };
 
 const startElasticSearch = (): void => {
