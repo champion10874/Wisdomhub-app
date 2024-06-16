@@ -7,7 +7,7 @@ import { createGig } from '@gig/services/gig.service';
 import { getDocumentCount } from '@gig/elasticsearch';
 
 
-const createGigController = async (req: Request, res: Response): Promise<void> => {
+const gigCreateController = async (req: Request, res: Response): Promise<void> => {
   try {
     const { error } = await Promise.resolve(gigCreateSchema.validate(req.body));
     if (error?.details) {
@@ -49,4 +49,4 @@ const createGigController = async (req: Request, res: Response): Promise<void> =
   }
 };
 
-export { createGigController };
+export { gigCreateController };
