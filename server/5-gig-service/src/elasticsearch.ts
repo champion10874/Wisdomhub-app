@@ -2,7 +2,7 @@ import { Client } from '@elastic/elasticsearch';
 import { gigConfig } from '@gig/config';
 import { ISellerGig, winstonLogger } from '@hassonor/wisdomhub-shared';
 import { Logger } from 'winston';
-import { ClusterHealthResponse, GetResponse } from '@elastic/elasticsearch/lib/api/types';
+import { ClusterHealthResponse, CountResponse, GetResponse } from '@elastic/elasticsearch/lib/api/types';
 
 const log: Logger = winstonLogger(`${gigConfig.ELASTIC_SEARCH_URL}`, 'gigElasticSearch', 'debug');
 
@@ -40,6 +40,16 @@ async function createIndex(indexName: string): Promise<void> {
     log.log('error', 'GigService createIndex() method error:', error);
   }
 }
+
+const getDocumentCount = async (index: string): Promise<number> => {
+  try {
+    const result: CountResponse = await elasticSearchClient.count({ index });
+    return result.count;
+  } catch (error) {
+    log.log('error', 'GigService elasticsearch getDocumentCount() method error:', error);
+    return 0;
+  }
+};
 
 const getIndexedData = async (index: string, itemId: string): Promise<ISellerGig> => {
   try {
@@ -94,5 +104,6 @@ export {
   getIndexedData,
   addDataToIndex,
   updateIndexedData,
-  deleteIndexData
+  deleteIndexData,
+  getDocumentCount
 };
