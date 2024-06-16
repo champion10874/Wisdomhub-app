@@ -1,6 +1,9 @@
 import { ISellerGig } from '@hassonor/wisdomhub-shared';
-import { getIndexedData } from '@gig/elasticsearch';
+import { addDataToIndex, getIndexedData } from '@gig/elasticsearch';
 import { gigsSearchBySellerId } from '@gig/services/search.service';
+import { GigModel } from '@gig/models/gig.schema';
+import { publishDirectMessage } from '@gig/queues/gig.producer';
+import { gigChannel } from '@gig/server';
 
 
 const getGigById = async (gigId: string): Promise<ISellerGig> => {
@@ -26,4 +29,20 @@ const getSellerPausedGigs = async (sellerId: string): Promise<ISellerGig[]> => {
   return resultsHits;
 };
 
-export { getGigById, getSellerGigs, getSellerPausedGigs };
+const createGig = async (gig: ISellerGig): Promise<ISellerGig> => {
+  const createdGig: ISellerGig = await GigModel.create(gig);
+  if (createdGig) {
+    const data: ISellerGig = createdGig.toJSON?.() as ISellerGig;
+    await publishDirectMessage(
+      gigChannel,
+      'wisdomhub-seller-update',
+      'user-seller',
+      JSON.stringify({ type: 'update-gigs-count', gigSellerId: `${data.sellerId}`, count: 1 }),
+      'Details sent to users service.'
+    );
+    await addDataToIndex('gigs', `${data.id}`, data);
+  }
+  return createdGig;
+};
+
+export { getGigById, getSellerGigs, getSellerPausedGigs, createGig };
