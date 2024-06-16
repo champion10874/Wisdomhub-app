@@ -1,5 +1,5 @@
 import { ISellerGig } from '@hassonor/wisdomhub-shared';
-import { addDataToIndex, getIndexedData } from '@gig/elasticsearch';
+import { addDataToIndex, deleteIndexData, getIndexedData } from '@gig/elasticsearch';
 import { gigsSearchBySellerId } from '@gig/services/search.service';
 import { GigModel } from '@gig/models/gig.schema';
 import { publishDirectMessage } from '@gig/queues/gig.producer';
@@ -43,6 +43,18 @@ const createGig = async (gig: ISellerGig): Promise<ISellerGig> => {
     await addDataToIndex('gigs', `${data.id}`, data);
   }
   return createdGig;
+};
+
+const deleteGig = async (gigId: string, sellerId: string): Promise<void> => {
+  await GigModel.deleteOne({ _id: gigId }).exec();
+  await publishDirectMessage(
+    gigChannel,
+    'wisdomhub-seller-update',
+    'user-seller',
+    JSON.stringify({ type: 'update-gigs-count', gigSellerId: sellerId, count: -1 }),
+    'Details sent to users service.'
+  );
+  await deleteIndexData('gigs', `${gigId}`);
 };
 
 export { getGigById, getSellerGigs, getSellerPausedGigs, createGig };
