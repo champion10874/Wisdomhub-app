@@ -1,5 +1,5 @@
 import { ISellerGig } from '@hassonor/wisdomhub-shared';
-import { addDataToIndex, deleteIndexData, getIndexedData } from '@gig/elasticsearch';
+import { addDataToIndex, deleteIndexData, getIndexedData, updateIndexedData } from '@gig/elasticsearch';
 import { gigsSearchBySellerId } from '@gig/services/search.service';
 import { GigModel } from '@gig/models/gig.schema';
 import { publishDirectMessage } from '@gig/queues/gig.producer';
@@ -57,4 +57,48 @@ const deleteGig = async (gigId: string, sellerId: string): Promise<void> => {
   await deleteIndexData('gigs', `${gigId}`);
 };
 
-export { getGigById, getSellerGigs, getSellerPausedGigs, createGig };
+const updateGig = async (gigId: string, gigData: ISellerGig): Promise<ISellerGig> => {
+  const updatedGig: ISellerGig = await GigModel.findOneAndUpdate(
+    { _id: gigId },
+    {
+      $set: {
+        title: gigData.title,
+        description: gigData.description,
+        categories: gigData.categories,
+        subCategories: gigData.categories,
+        tags: gigData.tags,
+        price: gigData.price,
+        coverImage: gigData.coverImage,
+        expectedDelivery: gigData.expectedDelivery,
+        basicTitle: gigData.basicTitle,
+        basicDescription: gigData.basicDescription
+      }
+    },
+    { new: true }
+  ).exec() as ISellerGig;
+  if (updatedGig) {
+    const data: ISellerGig = updatedGig.toJSON?.() as ISellerGig;
+    await updateIndexedData('gigs', `${updatedGig._id}`, data);
+  }
+  return updatedGig;
+};
+
+
+const updateActiveGigProp = async (gigId: string, isGigActive: boolean): Promise<ISellerGig> => {
+  const updatedGig: ISellerGig = await GigModel.findOneAndUpdate(
+    { _id: gigId },
+    {
+      $set: {
+        active: isGigActive
+      }
+    },
+    { new: true }
+  ).exec() as ISellerGig;
+  if (updatedGig) {
+    const data: ISellerGig = updatedGig.toJSON?.() as ISellerGig;
+    await updateIndexedData('gigs', `${updatedGig._id}`, data);
+  }
+  return updatedGig;
+};
+
+export { getGigById, getSellerGigs, getSellerPausedGigs, createGig, deleteGig, updateGig, updateActiveGigProp };
