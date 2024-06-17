@@ -94,4 +94,36 @@ const gigsSearch = async (
   };
 };
 
-export { gigsSearchBySellerId, gigsSearch };
+
+const gigsSearchByCategory = async (
+  searchQuery: string
+): Promise<ISearchResult> => {
+  const result: SearchResponse = await elasticSearchClient.search({
+    index: 'gigs',
+    size: 10,
+    query: {
+      bool: {
+        must: [
+          {
+            query_string: {
+              fields: ['categories'],
+              query: `*${searchQuery}*`
+            }
+          },
+          {
+            term: {
+              active: true
+            }
+          }
+        ]
+      }
+    }
+  });
+  const total: IHitsTotal = result.hits.total as IHitsTotal;
+  return {
+    total: total.value,
+    hits: result.hits.hits
+  };
+};
+
+export { gigsSearchBySellerId, gigsSearch, gigsSearchByCategory };
