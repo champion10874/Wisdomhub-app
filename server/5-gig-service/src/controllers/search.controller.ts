@@ -1,10 +1,10 @@
 import { Request, Response } from 'express';
 import { IPaginateProps, ISearchResult, ISellerGig } from '@hassonor/wisdomhub-shared';
-import { gigById, gigsSearch } from '@auth/services/search.service';
+import { gigsSearch } from '@gig/services/search.service';
 import { sortBy } from 'lodash';
 import { StatusCodes } from 'http-status-codes';
 
-export async function gigs(req: Request, res: Response) {
+const searchGigsController = async (req: Request, res: Response) => {
   try {
     const { from, size, type } = req.params;
     let resultHits: ISellerGig[] = [];
@@ -26,13 +26,6 @@ export async function gigs(req: Request, res: Response) {
   } catch (error) {
     res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: 'An error occurred while processing your request.' });
   }
-}
+};
 
-export async function singleGigById(req: Request, res: Response): Promise<void> {
-  try {
-    const gig = await gigById('gigs', req.params.gigId);
-    res.status(StatusCodes.OK).json({ message: 'Single gig result', gigs: gig });
-  } catch (error) {
-    res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: 'An error occurred while processing your request.' });
-  }
-}
+export { searchGigsController };

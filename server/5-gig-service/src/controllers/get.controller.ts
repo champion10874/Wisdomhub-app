@@ -1,7 +1,9 @@
 import { Request, Response } from 'express';
-import { BadRequestError, ISellerGig } from '@hassonor/wisdomhub-shared';
+import { BadRequestError, ISearchResult, ISellerGig } from '@hassonor/wisdomhub-shared';
 import { StatusCodes } from 'http-status-codes';
 import { getGigById, getSellerGigs, getSellerPausedGigs } from '@gig/services/gig.service';
+import { getUserSelectedGigCategory } from '@gig/redis/gig.cache';
+import { getMoreGigsLikeThis, getTopRatedGigsByCategory, gigsSearchByCategory } from '@gig/services/search.service';
 
 
 const gigByIdController = async (req: Request, res: Response): Promise<void> => {
@@ -43,4 +45,64 @@ const getSellerInActiveGigsController = async (req: Request, res: Response): Pro
   }
 };
 
-export { gigByIdController, getSellerGigsController, getSellerInActiveGigsController };
+const topRatedGigsByCategoryController = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const category = await getUserSelectedGigCategory(`selectedCategories:${req.params.username}`);
+    const resultHits: ISellerGig[] = [];
+    const gigs: ISearchResult = await getTopRatedGigsByCategory(`${category}`);
+    for (const item of gigs.hits) {
+      resultHits.push(item._source as ISellerGig);
+    }
+    res.status(StatusCodes.OK).json({ message: 'Search top gigs results', total: gigs.total, gigs: resultHits });
+  } catch (error) {
+    // console.error('topRatedGigsByCategoryController Error:', error); // move to elasticsearch later
+    const errorMessage = error instanceof BadRequestError ? error.message : 'An unexpected error occurred during get topRatedGigsByCategory.';
+    res
+      .status(error instanceof BadRequestError ? StatusCodes.BAD_REQUEST : StatusCodes.INTERNAL_SERVER_ERROR)
+      .json({ error: errorMessage });
+  }
+};
+
+const gigsByCategoryController = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const category = await getUserSelectedGigCategory(`selectedCategories:${req.params.username}`);
+    const resultHits: ISellerGig[] = [];
+    const gigs: ISearchResult = await gigsSearchByCategory(`${category}`);
+    for (const item of gigs.hits) {
+      resultHits.push(item._source as ISellerGig);
+    }
+    res.status(StatusCodes.OK).json({ message: 'Search gigs category results', total: gigs.total, gigs: resultHits });
+  } catch (error) {
+    // console.error('gigsByCategoryController Error:', error); // move to elasticsearch later
+    const errorMessage = error instanceof BadRequestError ? error.message : 'An unexpected error occurred during get gigsByCategory.';
+    res
+      .status(error instanceof BadRequestError ? StatusCodes.BAD_REQUEST : StatusCodes.INTERNAL_SERVER_ERROR)
+      .json({ error: errorMessage });
+  }
+};
+
+const moreLikeThisController = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const resultHits: ISellerGig[] = [];
+    const gigs: ISearchResult = await getMoreGigsLikeThis(req.params.gigId);
+    for (const item of gigs.hits) {
+      resultHits.push(item._source as ISellerGig);
+    }
+    res.status(StatusCodes.OK).json({ message: 'More gigs like this result', total: gigs.total, gigs: resultHits });
+  } catch (error) {
+    // console.error('moreLikeThisController Error:', error); // move to elasticsearch later
+    const errorMessage = error instanceof BadRequestError ? error.message : 'An unexpected error occurred during get moreLikeThis.';
+    res
+      .status(error instanceof BadRequestError ? StatusCodes.BAD_REQUEST : StatusCodes.INTERNAL_SERVER_ERROR)
+      .json({ error: errorMessage });
+  }
+};
+
+export {
+  gigByIdController,
+  getSellerGigsController,
+  getSellerInActiveGigsController,
+  topRatedGigsByCategoryController,
+  gigsByCategoryController,
+  moreLikeThisController
+};
