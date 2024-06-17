@@ -126,4 +126,25 @@ const gigsSearchByCategory = async (
   };
 };
 
-export { gigsSearchBySellerId, gigsSearch, gigsSearchByCategory };
+const getMoreGigsLikeThis = async (gigId: string): Promise<ISearchResult> => {
+  const result: SearchResponse = await elasticSearchClient.search({
+    index: 'gigs',
+    size: 5,
+    query: {
+      more_like_this: {
+        fields: ['username', 'title', 'description', 'basicDescription', 'basicTitle', 'categories', 'subCategories', 'tags'],
+        like: [{
+          _index: 'gigs',
+          _id: gigId
+        }]
+      }
+    }
+  });
+  const total: IHitsTotal = result.hits.total as IHitsTotal;
+  return {
+    total: total.value,
+    hits: result.hits.hits
+  };
+};
+
+export { gigsSearchBySellerId, gigsSearch, gigsSearchByCategory, getMoreGigsLikeThis };
