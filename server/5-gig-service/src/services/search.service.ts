@@ -147,4 +147,40 @@ const getMoreGigsLikeThis = async (gigId: string): Promise<ISearchResult> => {
   };
 };
 
-export { gigsSearchBySellerId, gigsSearch, gigsSearchByCategory, getMoreGigsLikeThis };
+
+const getTopRatedGigsByCategory = async (searchQuery: string): Promise<ISearchResult> => {
+  const result: SearchResponse = await elasticSearchClient.search({
+    index: 'gigs',
+    size: 10,
+    query: {
+      bool: {
+        filter: {
+          script: {
+            script: {
+              source: 'doc[\'ratingSum\'].value != 0 && (doc[\'ratingSum\'].value / doc[\'ratingsCount\'].value == params[\'threshold\'])',
+              lang: 'painless',
+              params: {
+                threshold: 5
+              }
+            }
+          }
+        },
+        must: [
+          {
+            query_string: {
+              fields: ['categories'],
+              query: `*${searchQuery}*`
+            }
+          }
+        ]
+      }
+    }
+  });
+  const total: IHitsTotal = result.hits.total as IHitsTotal;
+  return {
+    total: total.value,
+    hits: result.hits.hits
+  };
+};
+
+export { gigsSearchBySellerId, gigsSearch, gigsSearchByCategory, getMoreGigsLikeThis, getTopRatedGigsByCategory };
