@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { IPaginateProps, ISearchResult } from '@hassonor/wisdomhub-shared';
-import { gigById, gigsSearch } from '@auth/services/search-service';
+import { gigById, gigsSearch } from '@auth/services/search.service';
 import { sortBy } from 'lodash';
 import { StatusCodes } from 'http-status-codes';
 

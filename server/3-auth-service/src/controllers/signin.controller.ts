@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import { BadRequestError, IAuthDocument, isEmail } from '@hassonor/wisdomhub-shared';
 import { StatusCodes } from 'http-status-codes';
 import { signinSchema } from '@auth/schemes/signin.scheme';
-import { getAuthUserByEmail, getAuthUserByUsername, signToken } from '@auth/services/auth-service';
+import { getAuthUserByEmail, getAuthUserByUsername, signToken } from '@auth/services/auth.service';
 import { AuthModel } from '@auth/models/auth.schema';
 import { omit } from 'lodash';
 

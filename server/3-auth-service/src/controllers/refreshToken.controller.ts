@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { BadRequestError, IAuthDocument } from '@hassonor/wisdomhub-shared';
 import { StatusCodes } from 'http-status-codes';
-import { getAuthUserByUsername, signToken } from '@auth/services/auth-service';
+import { getAuthUserByUsername, signToken } from '@auth/services/auth.service';
 
 export async function refreshToken(req: Request, res: Response): Promise<void> {
   try {

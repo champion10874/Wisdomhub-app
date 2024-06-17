@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { BadRequestError, IAuthDocument } from '@hassonor/wisdomhub-shared';
 import { StatusCodes } from 'http-status-codes';
-import { getAuthUserById, getAuthUserByVerificationToken, updateVerifyEmailField } from '@auth/services/auth-service';
+import { getAuthUserById, getAuthUserByVerificationToken, updateVerifyEmailField } from '@auth/services/auth.service';
 
 export async function verifyEmail(req: Request, res: Response): Promise<void> {
   try {

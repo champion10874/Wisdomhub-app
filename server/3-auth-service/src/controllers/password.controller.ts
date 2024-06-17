@@ -8,7 +8,7 @@ import {
   getAuthUserByUsername,
   updatePassword,
   updatePasswordToken
-} from '@auth/services/auth-service';
+} from '@auth/services/auth.service';
 import { changePasswordSchema, emailSchema, passwordSchema } from '@auth/schemes/password.scheme';
 import { authConfig } from '@auth/config';
 import { publishDirectMessage } from '@auth/queues/auth.producer';

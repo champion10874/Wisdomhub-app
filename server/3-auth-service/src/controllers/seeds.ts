@@ -3,7 +3,7 @@ import { v4 as uuidV4 } from 'uuid';
 import { Request, Response } from 'express';
 import { generateUsername } from 'unique-username-generator';
 import { BadRequestError, firstLetterUppercase, IAuthDocument } from '@hassonor/wisdomhub-shared';
-import { createAuthUser, getAuthUserByUsernameOrEmail } from '@auth/services/auth-service';
+import { createAuthUser, getAuthUserByUsernameOrEmail } from '@auth/services/auth.service';
 import crypto from 'crypto';
 import { lowerCase, sample } from 'lodash';
 import { StatusCodes } from 'http-status-codes';

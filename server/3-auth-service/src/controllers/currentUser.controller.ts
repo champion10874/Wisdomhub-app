@@ -2,7 +2,7 @@ import crypto from 'crypto';
 import { Request, Response } from 'express';
 import { BadRequestError, IAuthDocument, IEmailMessageDetails } from '@hassonor/wisdomhub-shared';
 import { StatusCodes } from 'http-status-codes';
-import { getAuthUserByEmail, getAuthUserById, updateVerifyEmailField } from '@auth/services/auth-service';
+import { getAuthUserByEmail, getAuthUserById, updateVerifyEmailField } from '@auth/services/auth.service';
 import { authConfig } from '@auth/config';
 import { publishDirectMessage } from '@auth/queues/auth.producer';
 import { authChannel } from '@auth/server';

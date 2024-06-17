@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import * as auth from '@auth/services/auth-service';
+import * as auth from '@auth/services/auth.service';
 import * as helper from '@hassonor/wisdomhub-shared';
 import { authMock, authMockRequest, authMockResponse, authUserPayload } from '@auth/controllers/test/mocks/auth.mock';
 import { getCurrentUser, resendEmail } from '@auth/controllers/currentUser.controller';
@@ -7,7 +7,7 @@ import { StatusCodes } from 'http-status-codes';
 import { Sequelize } from 'sequelize';
 import { publishDirectMessage } from '@auth/queues/auth.producer';
 
-jest.mock('@auth/services/auth-service');
+jest.mock('@auth/services/auth.service');
 jest.mock('@auth/queues/auth.producer');
 jest.mock('@hassonor/wisdomhub-shared');
 jest.mock('@auth/queues/auth.producer.ts');

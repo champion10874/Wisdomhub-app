@@ -3,8 +3,14 @@ import { Request, Response } from 'express';
 import { v4 as uuidV4 } from 'uuid';
 import { UploadApiResponse } from 'cloudinary';
 import { signupSchema } from '@auth/schemes/signup.scheme';
-import { BadRequestError, firstLetterUppercase, IAuthDocument, IEmailMessageDetails, uploads } from '@hassonor/wisdomhub-shared';
-import { createAuthUser, getAuthUserByUsernameOrEmail, signToken } from '@auth/services/auth-service';
+import {
+  BadRequestError,
+  firstLetterUppercase,
+  IAuthDocument,
+  IEmailMessageDetails,
+  uploads
+} from '@hassonor/wisdomhub-shared';
+import { createAuthUser, getAuthUserByUsernameOrEmail, signToken } from '@auth/services/auth.service';
 import { lowerCase } from 'lodash';
 import { authConfig } from '@auth/config';
 import { publishDirectMessage } from '@auth/queues/auth.producer';
