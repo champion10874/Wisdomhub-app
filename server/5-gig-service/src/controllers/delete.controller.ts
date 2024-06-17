@@ -9,8 +9,8 @@ const gigDeleteController = async (req: Request, res: Response): Promise<void> =
     await deleteGig(req.params.gigId, req.params.sellerId);
     res.status(StatusCodes.OK).json({ message: 'Gig deleted successfully.' });
   } catch (error) {
-    // console.error('Created gig Error:', error); // move to elasticsearch later
-    const errorMessage = error instanceof BadRequestError ? error.message : 'An unexpected error occurred during update a gig.';
+    // console.error('Delete gig Error:', error); // move to elasticsearch later
+    const errorMessage = error instanceof BadRequestError ? error.message : 'An unexpected error occurred during delete a gig.';
     res
       .status(error instanceof BadRequestError ? StatusCodes.BAD_REQUEST : StatusCodes.INTERNAL_SERVER_ERROR)
       .json({ error: errorMessage });
