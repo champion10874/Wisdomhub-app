@@ -8,6 +8,7 @@ import {
   gigByIdController, gigsByCategoryController, moreLikeThisController, topRatedGigsByCategoryController
 } from '@gig/controllers/get.controller';
 import { searchGigsController } from '@gig/controllers/search.controller';
+import { seedCreateGigController } from '@gig/controllers/seed.controller';
 
 
 const router: Router = express.Router();
@@ -24,6 +25,7 @@ const gigRoutes = (): Router => {
   router.post('/create', gigCreateController);
   router.put('/:gigId', gigUpdateController);
   router.put('/active/:gigId', gigUpdateActiveController);
+  router.put('/seed/:count', seedCreateGigController);
   router.delete('/:gigId/:sellerId', gigDeleteController);
 
   return router;
