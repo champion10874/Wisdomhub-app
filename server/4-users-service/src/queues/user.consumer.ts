@@ -64,7 +64,16 @@ const consumeSellerDirectMessage = async (channel: Channel): Promise<void> => {
     const wisdomhubQueue = await channel.assertQueue(queueName, { durable: true, autoDelete: false });
     await channel.bindQueue(wisdomhubQueue.queue, exchangeName, routingKey);
     channel.consume(wisdomhubQueue.queue, async (msg: ConsumeMessage | null) => {
-      const { type, sellerId, ongoingJobs, completedJobs, totalEarnings, recentDelivery, gigSellerId, count } = JSON.parse(
+      const {
+        type,
+        sellerId,
+        ongoingJobs,
+        completedJobs,
+        totalEarnings,
+        recentDelivery,
+        gigSellerId,
+        count
+      } = JSON.parse(
         msg!.content.toString()
       );
       if (type === 'create-order') {
@@ -124,7 +133,7 @@ const consumeSeedGigDirectMessages = async (channel: Channel): Promise<void> => 
     if (!channel) {
       channel = (await createRabbitMQConnection()) as Channel;
     }
-    const exchangeName = 'jobber-gig';
+    const exchangeName = 'wisdomhub-gig';
     const routingKey = 'get-sellers';
     const queueName = 'user-gig-queue';
 
@@ -151,4 +160,9 @@ const consumeSeedGigDirectMessages = async (channel: Channel): Promise<void> => 
   }
 };
 
-export { consumeBuyerDirectMessage, consumeSellerDirectMessage, consumeReviewFanoutMessages, consumeSeedGigDirectMessages };
+export {
+  consumeBuyerDirectMessage,
+  consumeSellerDirectMessage,
+  consumeReviewFanoutMessages,
+  consumeSeedGigDirectMessages
+};

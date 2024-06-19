@@ -3,7 +3,7 @@ import { gigConfig } from '@gig/config';
 import { winstonLogger } from '@hassonor/wisdomhub-shared';
 import { createRabbitMQConnection } from '@gig/queues/connection';
 import { Channel, ConsumeMessage } from 'amqplib';
-import { updateGigReview } from '@gig/services/gig.service';
+import { seedData, updateGigReview } from '@gig/services/gig.service';
 
 
 const log: Logger = winstonLogger(`${gigConfig.ELASTIC_SEARCH_URL}`, 'gigServiceConsumer', 'debug');
@@ -44,7 +44,8 @@ const consumeSeedDirectMessages = async (channel: Channel): Promise<void> => {
     const wisdomhubQueue = await channel.assertQueue(queueName, { durable: true, autoDelete: false });
     await channel.bindQueue(wisdomhubQueue.queue, exchangeName, routingKey);
     channel.consume(wisdomhubQueue.queue, async (msg: ConsumeMessage | null) => {
-      //TODO: use seed data function
+      const { sellers, count } = JSON.parse(msg!.content.toString());
+      await seedData(sellers, count);
       channel.ack(msg!);
     });
   } catch (error) {
