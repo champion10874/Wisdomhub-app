@@ -193,6 +193,36 @@ services:
     networks:
       - elastic
 
+  gigs:
+    container_name: gigs_container
+    build:
+      context: ../server/5-gig-service
+      dockerfile: Dockerfile.dev
+      args:
+        NPM_TOKEN: ${NPM_TOKEN}
+    restart: always
+    ports:
+      - 4004:4004
+    env_file:
+      - ../server/5-gig-service/.env
+      - .env.cloudinary
+    environment:
+      - ENABLE_APM=0
+      - DATABASE_URL=mongodb://mongodb_container:27017/wisdomhub-gig
+      - GATEWAY_JWT_TOKEN=e73f1ece5087b8a5ae33998952202202
+      - JWT_TOKEN=f649f4bd58bcba407446b5d0d75e0e1c
+      - NODE_ENV=development
+      - API_GATEWAY_URL=http:/gateway_container:4000
+      - RABBITMQ_ENDPOINT=amqp://wisdomhub:wisdomhubpass@rabbitmq_container:5672
+      - REDIS_HOST=redis://redis_container:6379
+      - ELASTIC_SEARCH_URL=http://elastic:admin1234@elasticsearch_container:9200
+      - ELASTIC_APM_SERVER_URL=http://localhost:8200
+      - ELASTIC_APM_SECRET_TOKEN=
+    depends_on:
+      - elasticsearch
+      - mongodb
+    networks:
+      - elastic
   
   gateway:
     container_name: gateway_container
