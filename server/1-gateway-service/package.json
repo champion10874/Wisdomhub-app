@@ -42,6 +42,7 @@
   "dependencies": {
     "@elastic/elasticsearch": "^8.12.2",
     "@hassonor/wisdomhub-shared": "^0.1.15",
+    "@socket.io/redis-adapter": "^8.3.0",
     "axios": "^1.6.8",
     "bcrypt": "^5.1.1",
     "compression": "^1.7.4",
@@ -55,6 +56,7 @@
     "jsonwebtoken": "^9.0.2",
     "pino-pretty": "^10.3.1",
     "redis": "^4.6.14",
+    "socket.io": "^4.7.5",
     "typescript": "^5.4.2",
     "typescript-transform-paths": "^3.4.7",
     "winston": "^3.12.0"

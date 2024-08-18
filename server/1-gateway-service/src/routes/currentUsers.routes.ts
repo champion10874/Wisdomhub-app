@@ -13,6 +13,8 @@ class CurrentUsersRoutes {
   public routes(): Router {
     this.router.get('/auth/current-user', authMiddleware.checkAuthentication, CurrentUserController.prototype.read);
     this.router.get('/auth/refresh-token', authMiddleware.checkAuthentication, RefreshTokenController.prototype.refreshToken);
+    this.router.get('/auth/logged-in-user', authMiddleware.checkAuthentication, CurrentUserController.prototype.getLoggedInUsers);
+    this.router.delete('/auth/logged-in-user/:username', authMiddleware.checkAuthentication, CurrentUserController.prototype.removeLoggedInUser);
     this.router.post('/auth/resend-email', authMiddleware.checkAuthentication, CurrentUserController.prototype.resendEmail);
     return this.router;
   }
